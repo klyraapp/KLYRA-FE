@@ -1,0 +1,113 @@
+/**
+ * SelectedServiceCard Styles
+ */
+
+.selectedServiceCard {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin: -60px auto 32px;
+  /* Centered with overlap */
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.selectedServiceIcon {
+  width: 40px;
+  height: 40px;
+  background: #e8f5f2;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.selectedServiceIconSvg {
+  width: 20px;
+  height: 20px;
+  color: #297160;
+}
+
+
+.selectedServiceContent {
+  flex: 1;
+}
+
+.selectedServiceLabel {
+  font-size: 11px;
+  font-weight: 500;
+  color: #6b7280;
+  margin: 0 0 4px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.selectedServiceName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.selectedServicePrice {
+  flex-shrink: 0;
+}
+
+.selectedServicePriceLabel {
+  font-size: 11px;
+  font-weight: 500;
+  color: #6b7280;
+  margin: 0 0 2px 0;
+  text-align: right;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.selectedServicePriceText {
+  font-size: 18px;
+  font-weight: 700;
+  color: #297160;
+  display: block;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .selectedServiceCard {
+    padding: 14px 16px;
+    gap: 12px;
+    margin: -20px 16px 24px;
+    width: calc(100% - 32px);
+  }
+
+  .selectedServiceIcon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .selectedServiceIconSvg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .selectedServiceLabel {
+    font-size: 10px;
+  }
+
+  .selectedServiceName {
+    font-size: 14px;
+  }
+
+  .selectedServicePriceLabel {
+    font-size: 10px;
+  }
+
+  .selectedServicePriceText {
+    font-size: 16px;
+  }
+}

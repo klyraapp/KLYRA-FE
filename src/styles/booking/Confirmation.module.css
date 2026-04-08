@@ -1,0 +1,242 @@
+/**
+ * Confirmation Page Styles
+ */
+
+.pageWrapper {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+}
+
+.pageContainer {
+  max-width: 100%;
+  padding: 0 60px 60px 60px;
+  box-sizing: border-box;
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 16px;
+}
+
+.loadingText {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.customerSection {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.customerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.customerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.customerName {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.serviceType {
+  font-size: 16px;
+  color: #6b7280;
+}
+
+.successBadge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ecfdf5;
+  padding: 10px 16px;
+  border-radius: 24px;
+}
+
+.successIcon {
+  font-size: 20px;
+  color: #297160;
+}
+
+.successText {
+  font-size: 14px;
+  font-weight: 500;
+  color: #297160;
+}
+
+.infoGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.infoLabel {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.infoValue {
+  font-size: 14px;
+  color: #1f2937;
+  font-weight: 500;
+  text-align: right;
+}
+
+.bookingDetailsToggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 1px solid #e5e7eb;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.chevronDown {
+  transition: transform 0.2s ease;
+}
+
+.chevronUp {
+  transition: transform 0.2s ease;
+  transform: rotate(180deg);
+}
+
+.bookingDetailsContent {
+  padding-top: 0;
+}
+
+.confirmationMessage {
+  background-color: #ecfdf5;
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.messageText {
+  font-size: 16px;
+  font-weight: 600;
+  color: #297160;
+  margin: 0 0 8px 0;
+  line-height: 1.5;
+}
+
+.messageSubtitle {
+  font-size: 14px;
+  color: #297160;
+  margin: 0;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.errorAlert {
+  margin-bottom: 24px;
+  border-radius: 8px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.primaryButton {
+  height: 56px;
+  border-radius: 12px;
+  background-color: #297160;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.primaryButton:hover,
+.primaryButton:focus {
+  background-color: #1e5c4d !important;
+}
+
+.secondaryButton {
+  height: 56px;
+  border-radius: 12px;
+  background-color: #f8f9fa;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.secondaryButton:hover {
+  background-color: #f1f3f5;
+  color: #1f2937 !important;
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    padding: 0 16px 40px 16px;
+  }
+
+  .customerSection {
+    padding: 20px;
+  }
+
+  .customerRow {
+    flex-direction: column;
+  }
+
+  .customerName {
+    font-size: 18px;
+  }
+
+  .serviceType {
+    font-size: 14px;
+  }
+
+  .successBadge {
+    align-self: flex-start;
+  }
+
+  .infoLabel,
+  .infoValue {
+    font-size: 13px;
+  }
+
+  .confirmationMessage {
+    padding: 16px 20px;
+    margin-bottom: 24px;
+  }
+
+  .messageText {
+    font-size: 13px;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    height: 48px;
+    font-size: 15px;
+  }
+}

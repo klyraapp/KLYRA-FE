@@ -1,0 +1,120 @@
+/**
+ * BookingCustomerInfo Page Styles
+ */
+
+.pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f3f4f6;
+}
+
+.pageContainer {
+  flex: 1;
+  width: 100%;
+  margin: 0;
+  padding: 0 60px 40px 60px;
+  position: relative;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1200px) {
+  .pageContainer {
+    padding: 0 24px 40px 24px;
+  }
+}
+
+.formSection {
+  margin-bottom: 32px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 24px 0;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px 20px;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+}
+
+.fieldLabel {
+  font-size: 15px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.input {
+  height: 48px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  padding: 0 16px;
+}
+
+.input::placeholder {
+  color: #9ca3af;
+}
+
+.input:hover {
+  border-color: #297160;
+}
+
+.input:focus {
+  border-color: #297160;
+  box-shadow: 0 0 0 2px rgba(41, 113, 96, 0.1);
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    margin-top: -30px;
+    padding: 0 24px 32px 24px;
+  }
+
+  .sectionTitle {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .fieldLabel {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .input {
+    height: 44px;
+    font-size: 14px;
+    padding: 0 14px;
+  }
+}
+
+.inputError {
+  border-color: #ef4444 !important;
+}
+
+.inputError:focus {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1) !important;
+}
+
+.errorText {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+  font-weight: 500;
+}

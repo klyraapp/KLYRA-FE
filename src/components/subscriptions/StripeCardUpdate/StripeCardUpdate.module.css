@@ -1,0 +1,26 @@
+.formContainer {
+  margin-top: 16px;
+}
+
+.cardElementContainer {
+  padding: 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.updateButton {
+  background-color: #297160;
+  border-color: #297160;
+}
+
+.updateButton:hover {
+  background-color: #1f5749 !important;
+  border-color: #1f5749 !important;
+}

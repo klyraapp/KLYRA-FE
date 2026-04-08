@@ -1,0 +1,227 @@
+/**
+ * Sidebar Module CSS
+ * Pixel-perfect styles matching the KLYRA design
+ * On mobile, sidebar is placed inside Ant Design Drawer (handled by Layout)
+ */
+
+.sidebar {
+  width: 277px;
+  height: 100vh;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.sidebarCollapsed {
+  width: 80px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32px 24px 48px 24px;
+  transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.headerCollapsed {
+  padding: 32px 16px 48px 16px;
+  justify-content: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  transition: opacity 0.2s ease, width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  height: 42px; /* Set a fixed height for the logo */
+}
+
+.logoImage {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+}
+
+
+
+.logoCollapsed {
+  width: 0;
+  opacity: 0;
+}
+
+.menuToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.menuToggleIcon {
+  font-size: 24px;
+  color: #9ca3af;
+  transition: color 0.3s ease;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px;
+  gap: 8px;
+}
+
+.menuItemLink {
+  text-decoration: none;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease, padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.menuItemCollapsed {
+  padding: 16px;
+  justify-content: center;
+}
+
+.menuItem:hover {
+  background: #f9fafb;
+}
+
+.menuItemActive {
+  background: #297160;
+}
+
+.menuItemActive:hover {
+  background: #297160;
+}
+
+.menuIcon {
+  font-size: 24px;
+  color: #6b7280;
+  flex-shrink: 0;
+  transition: color 0.3s ease;
+  stroke-width: 2;
+}
+
+.menuItemActive .menuIcon {
+  color: #ffffff;
+}
+
+.menuLabel {
+  font-size: 16px;
+  font-weight: 500;
+  color: #374151;
+  flex: 1;
+  transition: opacity 0.2s ease, width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.menuLabelCollapsed {
+  width: 0;
+  opacity: 0;
+}
+
+.menuItemActive .menuLabel {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  background: #297160;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.badgeCollapsed {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  min-width: 20px;
+  height: 20px;
+  font-size: 11px;
+  padding: 0 6px;
+}
+
+.menuItemActive .badge {
+  background: #ffffff;
+  color: #297160;
+}
+
+.footer {
+  margin-top: auto;
+  padding: 24px;
+}
+
+.logoutButton {
+  width: 100%;
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid #f3f4f6;
+  border-radius: 12px;
+  color: #ef4444;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.logoutButton:hover {
+  background: #fef2f2;
+}
+
+/* Mobile: when inside the drawer, take full width and use relative positioning */
+@media (max-width: 767px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    box-shadow: none;
+  }
+
+  .header {
+    display: none;
+  }
+
+  .nav {
+    padding: 8px 16px;
+    gap: 4px;
+  }
+
+  .menuItem {
+    padding: 16px 20px;
+    border-radius: 12px;
+  }
+
+  .footer {
+    padding: 16px 24px 24px 24px;
+  }
+}

@@ -1,0 +1,62 @@
+.section {
+  padding: 16px 0;
+  border-top: 1px solid #f0f0f0;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #1f1f1f;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.label {
+  color: #8c8c8c;
+}
+
+.value {
+  color: #1f1f1f;
+  font-weight: 500;
+}
+
+.discountValue {
+  color: #ff4d4f;
+  font-weight: 500;
+}
+
+.totalRow {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.totalLabel {
+  font-weight: 700;
+  font-size: 16px;
+  color: #1f1f1f;
+}
+
+.totalValue {
+  font-weight: 700;
+  font-size: 16px;
+  color: #1f1f1f;
+}
+
+.taxRow {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.taxLabel,
+.taxValue {
+  font-size: 12px;
+  color: #8c8c8c;
+}

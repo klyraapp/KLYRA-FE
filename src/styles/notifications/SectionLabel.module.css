@@ -1,0 +1,13 @@
+.sectionLabel {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f1f1f;
+  margin: 32px 0 16px 0;
+  padding: 0 40px;
+}
+
+@media (max-width: 1200px) {
+  .sectionLabel {
+    padding: 0 24px;
+  }
+}

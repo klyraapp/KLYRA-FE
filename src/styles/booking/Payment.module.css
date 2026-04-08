@@ -1,0 +1,196 @@
+/**
+ * Payment Page Styles
+ * Matches styling from other booking pages
+ */
+
+.pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f3f4f6;
+}
+
+.pageContainer {
+  flex: 1;
+  width: 100%;
+  margin: 0;
+  padding: 0 60px 40px 60px;
+  position: relative;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1200px) {
+  .pageContainer {
+    padding: 0 24px 40px 24px;
+  }
+}
+
+.customerSection {
+  background: transparent;
+  padding: 24px 0;
+  margin-bottom: 24px;
+}
+
+.customerName {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.serviceType {
+  font-size: 16px;
+  color: #374151;
+  margin-bottom: 24px;
+}
+
+.infoGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.infoLabel {
+  font-size: 14px;
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.infoValue {
+  font-size: 14px;
+  color: #1f2937;
+  text-align: right;
+  font-weight: 500;
+}
+
+.bookingDetailsToggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  border-top: 1px solid #e5e7eb;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.chevronDown {
+  transition: transform 0.2s ease;
+  font-size: 18px;
+  color: #6b7280;
+}
+
+.chevronUp {
+  transform: rotate(180deg);
+  transition: transform 0.2s ease;
+  font-size: 18px;
+  color: #6b7280;
+}
+
+.bookingDetailsContent {
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    margin-top: -30px;
+    padding: 0 24px 32px 24px;
+  }
+
+  .customerName {
+    font-size: 18px;
+  }
+
+  .serviceType {
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+
+  .infoGrid {
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .infoLabel,
+  .infoValue {
+    font-size: 13px;
+  }
+
+  .bookingDetailsToggle {
+    font-size: 15px;
+    padding: 16px 0;
+  }
+}
+
+/* Stripe Payment Section */
+.stripeSection {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 20px 0;
+}
+
+.errorAlert {
+  margin-bottom: 24px;
+  border-radius: 8px;
+}
+
+.loadingOverlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.loadingText {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.recurringTooltip {
+  display: flex;
+  gap: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.recurringTooltipIcon {
+  color: #3b82f6;
+  font-size: 18px;
+  margin-top: 2px;
+}
+
+.recurringTooltipText {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #475569;
+  margin: 0;
+}

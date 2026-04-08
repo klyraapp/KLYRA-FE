@@ -1,0 +1,92 @@
+.profileModal :global(.ant-modal-content) {
+  padding: 32px;
+  border-radius: 12px;
+}
+
+.profileModal :global(.ant-modal-header) {
+  margin-bottom: 32px;
+}
+
+.modalTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f1f1f;
+}
+
+.inputLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f1f1f;
+}
+
+.profileInput {
+  height: 48px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  border: 1px solid #e5e7eb;
+}
+
+.profileInput:disabled {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+.formActions {
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.cancelButton {
+  flex: 1;
+  height: 48px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  border: none;
+  font-weight: 600;
+  color: #595959;
+}
+
+.cancelButton:hover {
+  background-color: #e5e7eb;
+  color: #1f1f1f !important;
+}
+
+.saveButton {
+  flex: 1;
+  height: 48px;
+  border-radius: 8px;
+  background-color: #297160;
+  border: none;
+  font-weight: 600;
+}
+
+.saveButton:hover,
+.saveButton:focus {
+  background-color: #215a4d !important;
+}
+
+@media (max-width: 768px) {
+  .profileModal :global(.ant-modal-content) {
+    padding: 24px 20px;
+  }
+
+  .profileModal :global(.ant-modal) {
+    max-width: calc(100vw - 32px);
+    margin: 16px auto;
+  }
+
+  .profileInput {
+    height: 44px;
+  }
+
+  .formActions {
+    flex-direction: column;
+    margin-top: 32px;
+  }
+
+  .cancelButton,
+  .saveButton {
+    height: 44px;
+  }
+}

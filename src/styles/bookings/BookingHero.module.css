@@ -1,0 +1,47 @@
+.heroCard {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin: -60px auto 80px;
+  /* Centered with overlap */
+  width: 100%;
+  max-width: 1163px;
+  box-sizing: border-box;
+}
+
+.title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f1f1f;
+}
+
+.subtitle {
+  margin: 4px 0 20px 0;
+  font-size: 16px;
+  color: #595959;
+}
+
+.bookButton {
+  background-color: #297160;
+  border-color: #297160;
+  color: #ffffff;
+  border: none;
+  height: 48px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.bookButton:hover,
+.bookButton:focus,
+.bookButton:active {
+  background-color: #215a4d !important;
+  border-color: #215a4d !important;
+  color: #ffffff !important;
+}

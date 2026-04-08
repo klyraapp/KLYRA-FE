@@ -1,0 +1,11 @@
+.skeletonItem {
+  padding: 24px 60px;
+  background: #ffffff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+@media (max-width: 1200px) {
+  .skeletonItem {
+    padding: 24px;
+  }
+}

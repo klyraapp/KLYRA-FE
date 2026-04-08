@@ -1,0 +1,413 @@
+/**
+ * BookService Module CSS
+ * Pixel-perfect styles for Book Service page
+ */
+
+.headerBar {
+  background: #297160;
+  border-radius: 0 0 16px 16px;
+  padding: 40px 60px;
+  width: 100%;
+  min-height: 235px;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.headerContent {
+  width: 100%;
+}
+
+.headerTopLevel {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.langSelector {
+  display: flex;
+  align-items: center;
+}
+
+.langDropdownLink {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.langDropdownLink:hover {
+  background: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+
+.brandSection {
+  margin-bottom: 20px;
+}
+
+.brandTitle {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+  letter-spacing: 1.5px;
+}
+
+.brandSubtitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.stepProgress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stepProgressItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stepNumber {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.stepNumberActive {
+  color: #ffffff;
+}
+
+.stepNumberCompleted {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.stepLabel {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.stepLabelActive {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.stepSeparator {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0 2px;
+}
+
+.pageContainer {
+  width: 100%;
+  margin: 0;
+  padding: 0 60px 40px 60px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1200px) {
+  .pageContainer {
+    padding: 0 24px 40px 24px;
+  }
+}
+
+.pageTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 24px 0;
+}
+
+.serviceGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.serviceCard {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+  border: 2px solid transparent;
+  position: relative;
+  z-index: 1;
+}
+
+.serviceCard::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px solid #297160;
+  border-radius: 14px;
+  opacity: 0;
+  transform: scale(0.98);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.serviceCard:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+}
+
+.serviceCard:hover::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.serviceCard:active {
+  transform: scale(0.98);
+}
+
+.serviceCardSelected {
+  border-color: #297160;
+  background: #fdfdfd;
+  box-shadow: 0 8px 16px rgba(41, 113, 96, 0.1);
+}
+
+.serviceCardIcon {
+  width: 48px;
+  height: 48px;
+  background: #e8f5f2;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.serviceCardIconSvg {
+  width: 24px;
+  height: 24px;
+  color: #297160;
+}
+
+.serviceCardContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.serviceCardTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 2px 0;
+}
+
+.serviceCardDescription {
+  font-size: 13px;
+  font-weight: 400;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.serviceCardPrice {
+  flex-shrink: 0;
+  margin-right: 8px;
+}
+
+.serviceCardPriceText {
+  font-size: 14px;
+  font-weight: 600;
+  color: #297160;
+}
+
+.serviceCardArrow {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.serviceCardArrowIcon {
+  width: 18px;
+  height: 18px;
+  color: #9ca3af;
+}
+
+.stepIndicator {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.stepIndicatorItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stepIndicatorNumber {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.stepIndicatorNumberActive {
+  color: #ffffff;
+}
+
+.stepIndicatorNumberCompleted {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.stepIndicatorLabel {
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.stepIndicatorLabelActive {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.stepIndicatorSeparator {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0 4px;
+}
+
+@media (max-width: 768px) {
+  .headerBar {
+    padding: 20px 16px 40px 16px;
+    margin-bottom: 32px;
+    min-height: auto;
+  }
+
+  .brandTitle {
+    font-size: 26px;
+  }
+
+  .brandSubtitle {
+    font-size: 13px;
+  }
+
+  .stepProgress {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .stepProgress::-webkit-scrollbar {
+    display: none;
+  }
+
+  .stepProgressItem {
+    flex-shrink: 0;
+  }
+
+  .stepNumber,
+  .stepLabel {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .pageContainer {
+    padding: 0 16px 32px 16px;
+  }
+
+  .pageTitle {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .serviceGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .serviceCard {
+    padding: 16px;
+    gap: 14px;
+  }
+
+  .serviceCardIcon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .serviceCardIconSvg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .serviceCardTitle {
+    font-size: 15px;
+  }
+
+  .serviceCardDescription {
+    font-size: 12px;
+  }
+
+  .serviceCardPriceText {
+    font-size: 13px;
+  }
+
+  .serviceCardArrowIcon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  padding: 40px;
+}
+
+.errorContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  padding: 40px;
+}
+
+.errorContainer p {
+  font-size: 16px;
+  color: #ef4444;
+  text-align: center;
+}
+
+.emptyState {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  padding: 40px;
+}
+
+.emptyState p {
+  font-size: 16px;
+  color: #6b7280;
+  text-align: center;
+}

@@ -1,0 +1,165 @@
+/**
+ * BookingDetailsExtra Page Styles
+ * Additional information collection page
+ */
+
+.pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f3f4f6;
+}
+
+.pageContainer {
+  flex: 1;
+  width: 100%;
+  margin: 0;
+  padding: 0 60px 40px 60px;
+  position: relative;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1200px) {
+  .pageContainer {
+    padding: 0 24px 40px 24px;
+  }
+}
+
+.formSection {
+  margin-bottom: 32px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 32px 0;
+}
+
+.questionSection {
+  margin-bottom: 32px;
+}
+
+.questionLabel {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 16px;
+}
+
+.radioGroup {
+  width: 100%;
+}
+
+.radioGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.radioCard {
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px 20px;
+  height: auto;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.radioCard:hover {
+  border-color: #297160;
+  box-shadow: 0 2px 8px rgba(41, 113, 96, 0.1);
+}
+
+.radioCard::before {
+  display: none;
+}
+
+.radioCardSelected {
+  border-color: #297160;
+  background: #f0fdf9;
+  box-shadow: 0 2px 8px rgba(41, 113, 96, 0.15);
+}
+
+.radioText {
+  font-size: 15px;
+  font-weight: 500;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.textArea {
+  width: 100%;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  padding: 12px 16px;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.textArea:hover {
+  border-color: #297160;
+}
+
+.textArea:focus {
+  border-color: #297160;
+  box-shadow: 0 0 0 2px rgba(41, 113, 96, 0.1);
+}
+
+.textArea::placeholder {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    margin-top: -30px;
+    padding: 0 24px 32px 24px;
+  }
+
+  .sectionTitle {
+    font-size: 16px;
+    margin-bottom: 24px;
+  }
+
+  .questionSection {
+    margin-bottom: 24px;
+  }
+
+  .questionLabel {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .radioGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .radioCard {
+    padding: 14px 18px;
+    min-height: 52px;
+  }
+
+  .radioText {
+    font-size: 14px;
+  }
+
+  .textArea {
+    font-size: 13px;
+    padding: 10px 14px;
+  }
+
+  .textArea::placeholder {
+    font-size: 13px;
+  }
+}

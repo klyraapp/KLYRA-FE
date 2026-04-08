@@ -1,0 +1,155 @@
+.container {
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 20px 0;
+}
+
+.offersList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.offerCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: #ffffff;
+  border: 1.5px solid #00a67e;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 1;
+}
+
+.offerCard::after {
+  content: '';
+  position: absolute;
+  top: -2.5px;
+  left: -2.5px;
+  right: -2.5px;
+  bottom: -2.5px;
+  border: 2px solid #00a67e;
+  border-radius: 15px;
+  opacity: 0;
+  transform: scale(0.98);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.offerCard:hover:not(.disabled) {
+  background: #f8faf9;
+  box-shadow: 0 10px 20px rgba(0, 166, 126, 0.08);
+}
+
+.offerCard:hover:not(.disabled)::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.offerCard.selected {
+  border-color: #00a67e;
+  background: #f0fdf9;
+  box-shadow: 0 4px 12px rgba(0, 166, 126, 0.12);
+}
+
+.offerCard.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: #d1d5db;
+}
+
+.offerCard.disabled .offerIcon {
+  background: #9ca3af;
+}
+
+.offerCard.disabled .offerName,
+.offerCard.disabled .offerDescription {
+  color: #9ca3af;
+}
+
+.offerIcon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #00a67e;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.offerContent {
+  flex: 1;
+}
+
+.offerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.offerName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.appliedBadge {
+  font-size: 16px;
+  font-weight: 700;
+  color: #00a67e;
+}
+
+.offerDescription {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.offerCard.selected .offerDescription {
+  color: #00a67e;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .offerCard {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .offerIcon {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .offerName {
+    font-size: 15px;
+  }
+
+  .appliedBadge {
+    font-size: 14px;
+  }
+
+  .offerDescription {
+    font-size: 13px;
+  }
+}

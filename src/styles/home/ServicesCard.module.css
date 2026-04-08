@@ -1,0 +1,74 @@
+/**
+ * ServicesCard Styles
+ */
+
+.servicesCard {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}
+
+.servicesCard::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px solid #297160;
+  border-radius: 14px;
+  opacity: 0;
+  transform: scale(0.98);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.servicesCard:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.servicesCard:hover::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.iconContainer {
+  width: 64px;
+  height: 64px;
+  background: #f5f7fa;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  font-size: 32px;
+  color: #297160;
+}
+
+.serviceName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f1f1f;
+  margin: 0;
+  text-align: center;
+}
+
+.priceText {
+  font-size: 14px;
+  color: #595959;
+  margin: 0;
+}

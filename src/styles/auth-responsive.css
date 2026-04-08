@@ -1,0 +1,16 @@
+/**
+ * Auth Pages Responsive CSS
+ * Additional responsive styles for login, signup, forgot-password, reset-password
+ * These are imported globally to supplement the JS inline styles
+ */
+
+@media (max-width: 480px) {
+
+  /* Make the auth card nearly full-width on small screens */
+  .auth-card-responsive {
+    padding: 32px 24px !important;
+    max-width: 100% !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+}

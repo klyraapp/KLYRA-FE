@@ -1,0 +1,184 @@
+.card {
+  width: 100%;
+  min-height: 220px;
+  border-radius: 16px;
+  overflow: visible;
+  /* Clips children like the green header perfectly */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px solid #297160;
+  border-radius: 18px;
+  opacity: 0;
+  transform: scale(0.98);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.card:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  border-color: transparent;
+}
+
+.card:hover::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.header {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 16px;
+  margin: -16px -16px 16px -16px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.headerTitle {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.headerPrice {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.headerCurrent {
+  background-color: #297160;
+  color: #ffffff;
+}
+
+.headerPast {
+  background-color: #f6fadb;
+  color: #1f1f1f;
+}
+
+.content {
+  padding: 0;
+}
+
+.serviceRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.serviceName {
+  font-weight: 700;
+  font-size: 14px;
+  color: #1f1f1f;
+}
+
+.customerName {
+  color: #595959;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #595959;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.icon {
+  color: #8c8c8c;
+  font-size: 14px;
+}
+
+@media (max-width: 576px) {
+
+  .headerTitle,
+  .headerPrice {
+    font-size: 14px;
+  }
+
+  .serviceName {
+    font-size: 13px;
+  }
+
+  .infoRow {
+    gap: 8px;
+    font-size: 13px;
+  }
+
+  .actionsContainer {
+    flex-direction: column !important;
+  }
+
+  .actionsContainer button {
+    width: 100% !important;
+  }
+}
+
+.actionsContainer {
+  margin-top: auto;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 16px;
+  display: flex !important;
+  gap: 8px;
+}
+
+.retryButton, .updateCardButton {
+  flex: 1;
+  height: 40px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.retryButton {
+  border-color: #297160 !important;
+  color: #297160 !important;
+  background: transparent;
+}
+
+.retryButton:hover {
+  background-color: rgba(41, 113, 96, 0.05) !important;
+  border-color: #215a4c !important;
+  color: #215a4c !important;
+}
+
+.updateCardButton {
+  background-color: #297160 !important;
+  border-color: #297160 !important;
+}
+
+.updateCardButton:hover {
+  background-color: #215a4c !important;
+  border-color: #215a4c !important;
+}
+
+@media (max-width: 768px) {
+  .actionsContainer {
+    flex-direction: column !important;
+  }
+  
+  .retryButton, .updateCardButton {
+    width: 100% !important;
+  }
+}

@@ -1,0 +1,7 @@
+/**
+ * This file has been deprecated and split into component-specific CSS modules.
+ * Please use the individual component CSS files in src/styles/components/
+ * 
+ * This file is kept temporarily to prevent build cache issues.
+ * It can be safely deleted after clearing Next.js cache (.next folder).
+ */

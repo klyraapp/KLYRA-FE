@@ -1,0 +1,281 @@
+/**
+ * BookingExtraServices Module CSS
+ * Pixel-perfect styles for Extra Services page
+ */
+
+.pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f3f4f6;
+}
+
+.pageContainer {
+  flex: 1;
+  width: 100%;
+  margin: 0;
+  padding: 0 60px 40px 60px;
+  position: relative;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1200px) {
+  .pageContainer {
+    padding: 0 24px 40px 24px;
+  }
+}
+
+.formSection {
+  margin-bottom: 32px;
+}
+
+.extraServicesTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 20px 0;
+}
+
+.infoBox {
+  background: #dbeafe;
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.infoIcon {
+  width: 20px;
+  height: 20px;
+  color: #3b82f6;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.infoText {
+  font-size: 14px;
+  font-weight: 400;
+  color: #1e40af;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.priceSummary {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.priceSummaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.priceSummaryRowTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 4px;
+}
+
+.priceSummaryLabel {
+  font-size: 15px;
+  font-weight: 500;
+  color: #297160;
+}
+
+.priceSummaryValue {
+  font-size: 15px;
+  font-weight: 600;
+  color: #297160;
+}
+
+.priceSummaryLabelGray {
+  font-size: 14px;
+  font-weight: 400;
+  color: #9ca3af;
+}
+
+.priceSummaryValueGray {
+  font-size: 14px;
+  font-weight: 500;
+  color: #9ca3af;
+}
+
+.priceSummaryLabelTotal {
+  font-size: 15px;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.priceSummaryValueTotal {
+  font-size: 18px;
+  font-weight: 700;
+  color: #297160;
+}
+
+.extraServicesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.extraServiceCard {
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.extraServiceCard:hover {
+  border-color: #297160;
+  box-shadow: 0 2px 8px rgba(41, 113, 96, 0.1);
+}
+
+.extraServiceCardSelected {
+  border-color: #297160;
+  background: #f0fdf9;
+  box-shadow: 0 2px 8px rgba(41, 113, 96, 0.15);
+}
+
+.extraServiceIconContainer {
+  width: 48px;
+  height: 48px;
+  background: #e8f5f2;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.extraServiceIcon {
+  width: 24px;
+  height: 24px;
+  color: #297160;
+}
+
+.extraServiceIconImage {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.extraServiceInfo {
+  flex: 1;
+}
+
+.extraServiceName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 2px 0;
+}
+
+.extraServiceDescription {
+  font-size: 13px;
+  font-weight: 400;
+  color: #6b7280;
+  margin: 0 0 6px 0;
+  line-height: 1.4;
+}
+
+.extraServicePrice {
+  font-size: 14px;
+  font-weight: 600;
+  color: #297160;
+  margin: 0;
+}
+
+.extraServiceRadio {
+  flex-shrink: 0;
+}
+
+.extraServiceRadio :global(.ant-radio-inner) {
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+}
+
+.extraServiceRadio :global(.ant-radio-checked .ant-radio-inner) {
+  border-color: #297160;
+  background-color: #297160;
+}
+
+.extraServiceRadio :global(.ant-radio-checked .ant-radio-inner::after) {
+  background-color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    margin-top: -30px;
+    padding: 0 24px 32px 24px;
+  }
+
+  .extraServicesTitle {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .infoBox {
+    padding: 12px 14px;
+    margin-bottom: 20px;
+  }
+
+  .infoText {
+    font-size: 13px;
+  }
+
+  .priceSummary {
+    padding: 14px;
+    margin-bottom: 20px;
+  }
+
+  .extraServicesGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .extraServiceCard {
+    padding: 16px;
+  }
+
+  .extraServiceIconContainer {
+    width: 44px;
+    height: 44px;
+  }
+
+  .extraServiceIcon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .extraServiceName {
+    font-size: 15px;
+  }
+
+  .extraServiceDescription {
+    font-size: 12px;
+  }
+
+  .extraServicePrice {
+    font-size: 13px;
+  }
+}
+
+.noServicesAlert {
+  margin-bottom: 24px;
+}

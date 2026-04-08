@@ -1,0 +1,76 @@
+/**
+ * CleaningInterval Component Styles
+ */
+
+.cleaningInterval {
+  width: 100%;
+}
+
+.sectionLabel {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 16px;
+}
+
+.intervalGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.intervalCard {
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.intervalCard:hover {
+  border-color: #297160;
+  box-shadow: 0 2px 8px rgba(41, 113, 96, 0.1);
+}
+
+.intervalCardSelected {
+  border-color: #297160;
+  background: #f0fdf9;
+  box-shadow: 0 2px 8px rgba(41, 113, 96, 0.15);
+}
+
+.intervalIcon {
+  width: 20px;
+  height: 20px;
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.intervalContent {
+  flex: 1;
+}
+
+.intervalTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 2px 0;
+}
+
+.intervalSubtitle {
+  font-size: 13px;
+  font-weight: 400;
+  color: #6b7280;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .sectionLabel {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+}

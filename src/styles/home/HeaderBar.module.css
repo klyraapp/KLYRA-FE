@@ -1,0 +1,5 @@
+/**
+ * HeaderBar Styles for Home Page
+ * Reuses existing HeaderBar component, this file can be used for home-specific overrides if needed.
+ */
+@import "@/styles/BookService.module.css";

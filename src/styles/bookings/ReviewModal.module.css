@@ -1,0 +1,162 @@
+/**
+ * ReviewModal Styles
+ */
+
+.reviewModal :global(.ant-modal-content) {
+  padding: 40px;
+  border-radius: 16px;
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f1f1f;
+  margin: 0 0 16px 0;
+}
+
+.subTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f1f1f;
+  margin: 0 0 16px 0;
+}
+
+.question {
+  font-size: 18px;
+  font-weight: 500;
+  color: #1f1f1f;
+  margin: 0 0 24px 0;
+}
+
+.ratingSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.ratingLabel {
+  font-size: 18px;
+  color: #8c8c8c;
+  font-weight: 500;
+}
+
+.stars {
+  font-size: 32px;
+  color: #ffc107;
+}
+
+.inputLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #595959;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+.textArea {
+  border-radius: 8px;
+  background-color: #ffffff;
+  border: 1px solid #f0f0f0;
+  padding: 12px;
+  font-size: 15px;
+  resize: none;
+}
+
+.textArea:focus {
+  border-color: #297160;
+  box-shadow: 0 0 0 2px rgba(41, 113, 96, 0.1);
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.cancelButton {
+  flex: 1;
+  height: 56px;
+  border-radius: 12px;
+  background-color: #f8f9fa;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  color: #595959;
+}
+
+.cancelButton:hover {
+  background-color: #f1f3f5;
+  color: #1f1f1f !important;
+}
+
+.submitButton {
+  flex: 1;
+  height: 56px;
+  border-radius: 12px;
+  background-color: #297160;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.submitButton:hover,
+.submitButton:focus {
+  background-color: #1e5c4d !important;
+}
+
+/* Success State Styles */
+.successContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.successIconContainer {
+  margin-bottom: 24px;
+}
+
+.successIcon {
+  font-size: 80px;
+  color: #297160;
+}
+
+.successTitle {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f1f1f;
+  margin: 0 0 16px 0;
+}
+
+.successText {
+  font-size: 16px;
+  color: #595959;
+  max-width: 320px;
+  line-height: 1.5;
+  margin: 0 0 32px 0;
+}
+
+.successActions {
+  width: 100%;
+}
+
+.doneButton {
+  width: 100%;
+  height: 56px;
+  border-radius: 12px;
+  background-color: #297160;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.doneButton:hover {
+  background-color: #1e5c4d !important;
+}

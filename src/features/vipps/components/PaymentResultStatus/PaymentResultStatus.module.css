@@ -1,0 +1,110 @@
+/**
+ * PaymentResultStatus Styles
+ */
+
+.stateContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 48px 32px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  text-align: center;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.iconSuccess {
+  font-size: 56px;
+  color: #297160;
+}
+
+.iconError {
+  font-size: 56px;
+  color: #ef4444;
+}
+
+.iconWarning {
+  font-size: 56px;
+  color: #f59e0b;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 15px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.6;
+  max-width: 360px;
+}
+
+.prominentSubtitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+  line-height: 1.4;
+  max-width: 360px;
+}
+
+.subtitleNote {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.6;
+  max-width: 360px;
+}
+
+.errorNote {
+  font-size: 13px;
+  color: #ef4444;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.primaryButton {
+  height: 52px;
+  border-radius: 12px;
+  background-color: #297160;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  width: 100%;
+}
+
+.primaryButton:hover,
+.primaryButton:focus {
+  background-color: #1e5c4d !important;
+}
+
+.secondaryButton {
+  height: 52px;
+  border-radius: 12px;
+  background-color: #f3f4f6;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2937;
+  width: 100%;
+}
+
+.secondaryButton:hover {
+  background-color: #e5e7eb !important;
+  color: #1f2937 !important;
+}

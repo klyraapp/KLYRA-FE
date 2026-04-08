@@ -1,0 +1,106 @@
+/**
+ * Notifications Page Styles
+ */
+
+.pageContainer {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+}
+
+.contentWrapper {
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.heroWrapper {
+  padding: 0 60px;
+  margin-top: 0;
+}
+
+.notificationsSection {
+  margin-top: 32px;
+  padding-bottom: 60px;
+}
+
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 95%;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.scrollTrigger {
+  height: 20px;
+  margin-top: 20px;
+}
+
+.initialLoading {
+  padding: 100px 0;
+  text-align: center;
+  color: #8c8c8c;
+  font-size: 16px;
+}
+
+.noMoreItems {
+  text-align: center;
+  padding: 32px 0;
+  color: #bfbfbf;
+  font-size: 14px;
+}
+
+@media (max-width: 1200px) {
+  .heroWrapper {
+    padding: 0 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroWrapper {
+    padding: 0 16px;
+  }
+
+  .notificationsSection {
+    margin-top: 24px;
+    padding-bottom: 40px;
+  }
+
+  .listContainer {
+    max-width: 100%;
+    padding: 0 16px;
+  }
+
+  .initialLoading {
+    padding: 60px 0;
+    font-size: 14px;
+  }
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 16px;
+  margin: 20px auto;
+  width: calc(100% - 32px);
+  max-width: 800px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.emptyStateTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.emptyStateMessage {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}

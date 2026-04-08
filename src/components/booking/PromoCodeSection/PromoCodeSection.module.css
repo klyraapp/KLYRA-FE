@@ -1,0 +1,138 @@
+.container {
+  margin-bottom: 24px;
+}
+
+.toggleButton {
+  cursor: pointer;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.toggleButton.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.promoText {
+  font-size: 16px;
+  font-weight: 600;
+  color: #00a67e;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.toggleButton.disabled .promoText {
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.toggleButton:not(.disabled) .promoText:hover {
+  text-decoration: underline;
+}
+
+.inputContainer {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.input {
+  flex: 1;
+  height: 48px;
+  border-radius: 6px;
+  border: 1px solid #d9d9d9;
+  font-size: 14px;
+  padding: 0 16px;
+}
+
+.input:focus {
+  border-color: #00a67e;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 166, 126, 0.1);
+}
+
+.input::placeholder {
+  color: #bfbfbf;
+}
+
+.input:disabled {
+  background: #f5f5f5;
+  cursor: not-allowed;
+  color: #9ca3af;
+}
+
+.applyButton {
+  height: 48px;
+  padding: 0 40px;
+  background: #00a67e;
+  border: none;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 1;
+}
+
+.applyButton::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px solid #008f6c;
+  border-radius: 8px;
+  opacity: 0;
+  transform: scale(0.98);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.applyButton:hover:not(:disabled) {
+  background: #008f6c;
+  box-shadow: 0 6px 20px rgba(0, 166, 126, 0.2);
+}
+
+.applyButton:hover:not(:disabled)::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.applyButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.applyButton:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
+.successMessage {
+  font-size: 13px;
+  color: #00a67e;
+  line-height: 1.6;
+}
+
+.errorMessage {
+  font-size: 13px;
+  color: #ff4d4f;
+  line-height: 1.6;
+}
+
+.removeButton {
+  background: #ff4d4f;
+}
+
+.removeButton::after {
+  border: 2px solid #ff7875;
+}
+
+.removeButton:hover:not(:disabled) {
+  background: #ff7875;
+  box-shadow: 0 6px 20px rgba(255, 77, 79, 0.2);
+}

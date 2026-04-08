@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 0;
+  width: 100%;
+}
+
+.iconWrapper {
+  background-color: #f0f0f0;
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.icon {
+  font-size: 32px;
+  color: #8c8c8c;
+}
+
+.text {
+  font-size: 16px;
+  color: #8c8c8c;
+  margin: 0;
+  font-weight: 500;
+}

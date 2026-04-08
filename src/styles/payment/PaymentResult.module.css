@@ -1,0 +1,35 @@
+/**
+ * Payment Result Page Styles
+ */
+
+.pageWrapper {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+}
+
+.pageContainer {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  box-sizing: border-box;
+}
+
+.noBookingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+}
+
+.noBookingText {
+  font-size: 15px;
+  color: #6b7280;
+  text-align: center;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    padding: 24px 16px 60px;
+  }
+}

@@ -1,0 +1,90 @@
+/**
+ * PaymentSummary Styles
+ */
+
+.container {
+  background: transparent;
+  padding: 20px 0 0 0;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 20px 0;
+}
+
+.content {
+  padding: 0;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.label {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.value {
+  font-size: 14px;
+  color: #1f2937;
+  font-weight: 500;
+}
+
+
+
+.discountLabel {
+  font-size: 14px;
+  color: #00a67e;
+  font-weight: 400;
+}
+
+.discountValue {
+  font-size: 14px;
+  color: #00a67e;
+  font-weight: 500;
+}
+
+.divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 20px 0;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.totalLabel {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.totalValue {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.taxRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.taxLabel,
+.taxValue {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 400;
+}

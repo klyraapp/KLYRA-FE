@@ -1,0 +1,75 @@
+/**
+ * AccommodationSelector Component Styles
+ */
+
+.accommodationSelector {
+  width: 100%;
+}
+
+.sectionLabel {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 16px;
+}
+
+.accommodationGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.accommodationCard {
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.accommodationCard:hover {
+  border-color: #297160;
+  box-shadow: 0 2px 8px rgba(41, 113, 96, 0.1);
+}
+
+.accommodationCardSelected {
+  border-color: #297160;
+  background: #f0fdf9;
+  box-shadow: 0 2px 8px rgba(41, 113, 96, 0.15);
+}
+
+.accommodationIcon {
+  width: 40px;
+  height: 40px;
+  color: #297160;
+}
+
+.accommodationLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .sectionLabel {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .accommodationGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .accommodationCard {
+    padding: 24px 20px;
+  }
+}

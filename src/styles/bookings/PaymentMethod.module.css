@@ -1,0 +1,27 @@
+.section {
+  padding: 16px 0;
+  border-top: 1px solid #f0f0f0;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #1f1f1f;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.label {
+  color: #8c8c8c;
+}
+
+.value {
+  color: #1f1f1f;
+  font-weight: 500;
+}

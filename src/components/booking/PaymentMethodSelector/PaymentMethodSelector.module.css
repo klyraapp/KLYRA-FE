@@ -1,0 +1,135 @@
+.container {
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 20px 0;
+}
+
+.methodsContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.methodCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 20px;
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 1;
+}
+
+.methodCard::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px solid #297160;
+  border-radius: 14px;
+  opacity: 0;
+  transform: scale(0.98);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.methodCard:hover {
+  border-color: transparent;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+}
+
+.methodCard:hover::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.methodCard.selected {
+  border-color: #297160;
+  background: #f0fdf9;
+  box-shadow: 0 4px 12px rgba(41, 113, 96, 0.1);
+}
+
+.methodIcon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.vippsLogo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.methodIcon svg {
+  font-size: 24px;
+  color: #6b7280;
+}
+
+.methodLabel {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.methodCard :global(.ant-radio) {
+  margin-left: auto;
+}
+
+.methodCard :global(.ant-radio-checked .ant-radio-inner) {
+  border-color: #297160;
+  background-color: #297160;
+}
+
+.methodCard :global(.ant-radio:hover .ant-radio-inner) {
+  border-color: #297160;
+}
+
+.methodCard :global(.ant-radio-inner) {
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+}
+
+.methodCard :global(.ant-radio-inner::after) {
+  width: 10px;
+  height: 10px;
+  margin-top: 3px;
+  margin-left: 3px;
+}
+
+@media (max-width: 768px) {
+  .methodsContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .methodCard {
+    padding: 16px 18px;
+  }
+
+  .methodIcon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .methodLabel {
+    font-size: 14px;
+  }
+}

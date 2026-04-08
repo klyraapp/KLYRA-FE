@@ -1,0 +1,111 @@
+/**
+ * ProfileHeader Styles
+ * Matches the appearance of the Book Service header bar.
+ */
+
+.header {
+  background-color: #297160;
+  border-radius: 0 0 16px 16px;
+  padding: 40px 60px 80px 60px;
+  /* Increased bottom padding for card overlap */
+  color: #ffffff;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 235px;
+  display: flex;
+  flex-direction: column;
+}
+
+.headerContent {
+  width: 100%;
+  max-width: 1400px;
+  /* Increased to take more space */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.brandSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.brandTitle {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+  letter-spacing: 1.5px;
+  line-height: 1.2;
+}
+
+.brandSubtitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.userSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.userName {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+}
+
+.userEmail {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+.editButton {
+  width: 44px;
+  height: 44px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.editButton:hover,
+.editButton:focus {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
+}
+
+.editIcon {
+  font-size: 20px;
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 20px 24px 60px 24px;
+  }
+
+  .brandTitle {
+    font-size: 28px;
+  }
+
+  .userName {
+    font-size: 24px;
+  }
+}

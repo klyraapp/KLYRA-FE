@@ -1,0 +1,63 @@
+/**
+ * PaymentElementForm Styles
+ */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.paymentElementContainer {
+  position: relative;
+  min-height: 200px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+}
+
+.loadingOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  z-index: 1;
+}
+
+.errorAlert {
+  border-radius: 8px;
+}
+
+.submitButton {
+  height: 56px;
+  border-radius: 12px;
+  background-color: #297160;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.submitButton:hover:not(:disabled),
+.submitButton:focus:not(:disabled) {
+  background-color: #1e5c4d !important;
+}
+
+.submitButton:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.secureNote {
+  font-size: 12px;
+  color: #6b7280;
+  text-align: center;
+  margin: 0;
+}

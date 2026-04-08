@@ -1,0 +1,82 @@
+/**
+ * BookingHeroCard Styles
+ */
+
+.heroCard {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin: -60px auto 0;
+  width: 100%;
+  max-width: 1163px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f1f1f;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 16px;
+  color: #595959;
+}
+
+.bookButton {
+  background-color: #297160;
+  border-color: #297160;
+  color: #ffffff;
+  border: none;
+  height: 48px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  width: 100%;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bookButton:hover,
+.bookButton:focus,
+.bookButton:active {
+  background-color: #215a4d !important;
+  border-color: #215a4d !important;
+  color: #ffffff !important;
+}
+
+@media (max-width: 768px) {
+  .heroCard {
+    padding: 24px;
+    margin: -40px auto 0;
+    gap: 16px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .bookButton {
+    height: 44px;
+    font-size: 15px;
+  }
+}
