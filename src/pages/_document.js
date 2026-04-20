@@ -4,6 +4,9 @@ import Document, { Head, Html, Main, NextScript } from "next/document";
 
 const MyDocument = () => {
   const gtmEnabled = process.env.NEXT_PUBLIC_ENABLE_GTM === "true";
+  const smartsuppEnabled =
+    process.env.NEXT_PUBLIC_ENABLE_SMARTSUPP === "true";
+  const smartsuppKey = process.env.NEXT_PUBLIC_SMARTSUPP_KEY || "";
   return (
     <Html lang="en">
       <Head>
@@ -41,6 +44,38 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         )}
         <Main />
         <NextScript />
+
+        {/* Smartsupp Live Chat */}
+        {smartsuppEnabled && smartsuppKey && (
+          <>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  var _smartsupp = _smartsupp || {};
+                  _smartsupp.key = '${smartsuppKey}';
+                  window.smartsupp || (function(d) {
+                    var s, c, o = smartsupp = function() { o._.push(arguments) };
+                    o._ = [];
+                    s = d.getElementsByTagName('script')[0];
+                    c = d.createElement('script');
+                    c.type = 'text/javascript';
+                    c.charset = 'utf-8';
+                    c.async = true;
+                    c.src = 'https://www.smartsuppchat.com/loader.js?';
+                    s.parentNode.insertBefore(c, s);
+                  })(document);
+                `,
+              }}
+            />
+            <noscript>
+              Powered by{" "}
+              <a href="https://www.smartsupp.com" target="_blank" rel="noopener noreferrer">
+                Smartsupp
+              </a>
+            </noscript>
+          </>
+        )}
+        {/* End Smartsupp Live Chat */}
       </body>
     </Html>
   );
