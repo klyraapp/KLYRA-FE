@@ -155,6 +155,7 @@ const ConfirmationPage = () => {
       priceBreakdown: booking.priceBreakdown,
       parkingCost: parseFloat(booking.parkingSurcharge || 0),
       petCost: parseFloat(booking.petSurcharge || 0),
+      weekendSurcharge: parseFloat(booking.weekendSurcharge || 0),
     }
     : null;
 
@@ -267,7 +268,7 @@ const ConfirmationPage = () => {
           </p>
           <p className={styles.messageSubtitle}>
             {t("bookingFlow.bookingConfirmedSubtitle", {
-              
+
               fallback: "You will receive a confirmation email with details about your booking.",
             })}
           </p>

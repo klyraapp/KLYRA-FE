@@ -163,3 +163,43 @@
     font-size: 13px;
   }
 }
+
+.recurringCheckboxContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 32px;
+  margin-bottom: 24px;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.recurringCheckboxLeft {
+  flex: 1;
+}
+
+.recurringCheckboxText {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 4px 0;
+  line-height: 1.4;
+}
+
+.recurringCheckboxSubtext {
+  font-size: 13px;
+  color: #64748b;
+  display: block;
+}
+
+.customSwitch :global(.ant-switch) {
+  background-color: #cbd5e1;
+}
+
+.customSwitch :global(.ant-switch-checked) {
+  background-color: #297160 !important;
+}

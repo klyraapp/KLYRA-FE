@@ -12,7 +12,7 @@ const BookingStatusBadge = ({ status }) => {
   const getBadgeProps = (status) => {
     switch (status) {
       case BookingStatus.PENDING:
-        return { color: 'warning', text: t("bookingFlow.pendingStatus", { fallback: 'Pending' }) };
+        return { color: 'warning', text: t("bookingFlow.pendingStatus", { fallback: 'Waiting payment' }) };
       case BookingStatus.CONFIRMED:
         return { className: styles.confirmed, text: t("bookingFlow.bookedStatus", { fallback: 'Confirmed' }) };
       case BookingStatus.IN_PROGRESS:

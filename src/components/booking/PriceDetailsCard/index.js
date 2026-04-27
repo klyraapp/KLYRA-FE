@@ -4,6 +4,7 @@
  */
 
 import { useTranslation } from "@/hooks/useTranslation";
+import { formatExtraServiceName, getExtraServiceTotal } from "@/utils/pricing";
 import styles from "./PriceDetailsCard.module.css";
 
 const PriceDetailsCard = ({ calculation, loading, serviceName, isRecurring, recurringInterval }) => {
@@ -20,10 +21,12 @@ const PriceDetailsCard = ({ calculation, loading, serviceName, isRecurring, recu
     priceBreakdown,
     parkingCost,
     petCost,
+    weekendSurcharge,
   } = calculation;
 
   const extras = priceBreakdown?.extras || [];
   const surcharges = priceBreakdown?.surcharges || {};
+  const weekendSurchargeAmount = calculation?.surcharges?.weekendSurcharge || surcharges?.weekendSurcharge || weekendSurcharge;
 
   return (
     <div className={styles.container}>
@@ -47,19 +50,22 @@ const PriceDetailsCard = ({ calculation, loading, serviceName, isRecurring, recu
 
         {/* Extras */}
         {Array.isArray(extras) && extras.length > 0 &&
-          extras.map((extra, index) => (
-            <div className={styles.priceRow} key={extra?.id || index}>
-              <span className={styles.label}>
-                {extra?.name ||
-                  t("bookingFlow.extraServiceLabel", {
-                    fallback: "Extra Service",
+          extras.map((extra, index) => {
+            const lineTotal = getExtraServiceTotal(extra);
+            const formattedName = formatExtraServiceName(extra, t);
+
+            return (
+              <div className={styles.priceRow} key={extra?.id || index}>
+                <span className={styles.label}>{formattedName}</span>
+                <span className={styles.value}>
+                  {t('bookingFlow.currencyFormatPlus', {
+                    price: lineTotal.toFixed(2),
+                    fallback: `+NOK ${lineTotal.toFixed(2)}`
                   })}
-              </span>
-              <span className={styles.value}>
-                {t('bookingFlow.currencyFormatPlus', { price: parseFloat(extra?.price || 0).toFixed(2), fallback: `+NOK ${parseFloat(extra?.price || 0).toFixed(2)}` })}
-              </span>
-            </div>
-          ))}
+                </span>
+              </div>
+            );
+          })}
 
         {/* Surcharges */}
         {parkingCost > 0 && (
@@ -99,7 +105,18 @@ const PriceDetailsCard = ({ calculation, loading, serviceName, isRecurring, recu
           </div>
         )}
 
-
+        {parseFloat(weekendSurchargeAmount) > 0 && (
+          <div className={styles.priceRow}>
+            <span className={styles.label}>
+              {t("bookingFlow.weekendSurchargeLabel", {
+                fallback: "Weekend Surcharge",
+              })}
+            </span>
+            <span className={styles.value}>
+              {t('bookingFlow.currencyFormatPlus', { price: parseFloat(weekendSurchargeAmount || 0).toFixed(2), fallback: `+NOK ${parseFloat(weekendSurchargeAmount || 0).toFixed(2)}` })}
+            </span>
+          </div>
+        )}
 
         {/* Discount */}
         {discountAmount > 0 && (

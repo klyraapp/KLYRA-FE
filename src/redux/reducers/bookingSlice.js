@@ -24,7 +24,8 @@ const initialState = {
   specialInstructions: "",
 
   // Step 2 Extra Services
-  selectedExtraServiceIds: [],
+  selectedExtraServices: [],
+  inEveryRrecurring: false,
 
   // Step 3: Date & Time
   bookingDate: null,
@@ -61,7 +62,7 @@ const bookingSlice = createSlice({
       state.recurringInterval = null;
 
       // Reset extra services selection when a main service is selected/changed
-      state.selectedExtraServiceIds = [];
+      state.selectedExtraServices = [];
 
       // Extract extra services from the service response
       const extras = service?.extraServices || service?.extraervices || [];
@@ -100,16 +101,38 @@ const bookingSlice = createSlice({
     setSpecialInstructions: (state, action) => {
       state.specialInstructions = action.payload;
     },
-    setSelectedExtraServiceIds: (state, action) => {
-      state.selectedExtraServiceIds = action.payload;
+    setSelectedExtraServices: (state, action) => {
+      state.selectedExtraServices = action.payload;
+    },
+    setExtraServiceQuantity: (state, action) => {
+      const { extraServiceId, quantity } = action.payload;
+      const service = state.selectedExtraServices.find(
+        (s) => s.extraServiceId === extraServiceId
+      );
+      if (service) {
+        if (quantity <= 0) {
+          state.selectedExtraServices = state.selectedExtraServices.filter(
+            (s) => s.extraServiceId !== extraServiceId
+          );
+        } else {
+          service.quantity = quantity;
+        }
+      } else if (quantity > 0) {
+        state.selectedExtraServices.push({ extraServiceId, quantity });
+      }
+    },
+    setInEveryRrecurring: (state, action) => {
+      state.inEveryRrecurring = action.payload;
     },
     toggleExtraService: (state, action) => {
-      const serviceId = action.payload;
-      const index = state.selectedExtraServiceIds.indexOf(serviceId);
+      const extraServiceId = action.payload;
+      const index = state.selectedExtraServices.findIndex(
+        (s) => s.extraServiceId === extraServiceId
+      );
       if (index > -1) {
-        state.selectedExtraServiceIds.splice(index, 1);
+        state.selectedExtraServices.splice(index, 1);
       } else {
-        state.selectedExtraServiceIds.push(serviceId);
+        state.selectedExtraServices.push({ extraServiceId, quantity: 1 });
       }
     },
     setBookingDate: (state, action) => {
@@ -165,7 +188,9 @@ export const {
   setHasPets,
   setAccessMethod,
   setSpecialInstructions,
-  setSelectedExtraServiceIds,
+  setSelectedExtraServices,
+  setExtraServiceQuantity,
+  setInEveryRrecurring,
   toggleExtraService,
   setBookingDate,
   setPreferredTime,

@@ -5,7 +5,7 @@
  */
 
 import api from '@/utils/axiosMiddleware';
-import { VIPPS_BOOKING_ID_KEY } from '../types';
+import { KLARNA_BOOKING_ID_KEY, VIPPS_BOOKING_ID_KEY } from '../types';
 
 const BOOKINGS_ENDPOINT = '/bookings';
 
@@ -69,4 +69,35 @@ export const retrieveVippsBookingId = () => {
 export const clearVippsBookingId = () => {
   if (typeof window === 'undefined') return;
   localStorage.removeItem(VIPPS_BOOKING_ID_KEY);
+};
+
+/**
+ * Persists the bookingId in localStorage before redirecting to Klarna.
+ * Klarna (via Stripe) also appends `payment_intent_client_secret` to the
+ * return URL, but localStorage guarantees we always have the bookingId
+ * regardless of how the user gets back (query params stripped, new tab, etc).
+ *
+ * @param {string} bookingId - The booking UUID to persist
+ */
+export const persistKlarnaBookingId = (bookingId) => {
+  if (typeof window === 'undefined' || !bookingId) return;
+  localStorage.setItem(KLARNA_BOOKING_ID_KEY, bookingId);
+};
+
+/**
+ * Retrieves the persisted Klarna bookingId from localStorage.
+ * @returns {string | null} The stored bookingId, or null if not found
+ */
+export const retrieveKlarnaBookingId = () => {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem(KLARNA_BOOKING_ID_KEY);
+};
+
+/**
+ * Clears the Klarna bookingId from localStorage after the result page
+ * reaches a terminal state.
+ */
+export const clearKlarnaBookingId = () => {
+  if (typeof window === 'undefined') return;
+  localStorage.removeItem(KLARNA_BOOKING_ID_KEY);
 };

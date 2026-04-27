@@ -39,6 +39,6 @@ export const deleteBooking = (id) => {
  * Fetches disabled dates and weekend-off flags for the booking calendar.
  * @returns {Promise<{ disabledDates: string[], sundayOff: boolean, saturdayOff: boolean }>}
  */
-export const getCalendarDisabledDates = () => {
-  return api.get(`${BOOKINGS_ENDPOINT}/calendar/disabled-dates`);
+export const getCalendarDisabledDates = (serviceId) => {
+  return api.get(`${BOOKINGS_ENDPOINT}/calendar/disabled-dates/${serviceId}`);
 };

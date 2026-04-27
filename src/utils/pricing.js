@@ -171,3 +171,37 @@ export const getServiceBasePrice = (service) => {
   const price = parseFloat(priceStr);
   return !isNaN(price) ? price : 0;
 };
+
+/**
+ * Gets the total price for an extra service line based on price and quantity
+ * @param {Object} extra - The extra service object from priceBreakdown.extras
+ * @returns {number} The total price for this extra
+ */
+export const getExtraServiceTotal = (extra) => {
+  if (!extra) return 0;
+  const quantity = extra.quantity || 1;
+  const unitPrice = parseFloat(extra.price || 0);
+  return quantity * unitPrice;
+};
+
+/**
+ * Formats the name of an extra service to include quantity if greater than 1
+ * @param {Object} extra - The extra service object
+ * @param {Function} t - The translation function
+ * @returns {string} The formatted name
+ */
+export const formatExtraServiceName = (extra, t) => {
+  if (!extra) return "";
+  const baseName =
+    extra.name ||
+    (t
+      ? t("bookingFlow.extraServiceLabel", { fallback: "Extra Service" })
+      : "Extra Service");
+  const quantity = extra.quantity || 1;
+  const unitPrice = parseFloat(extra.price || 0);
+
+  if (quantity > 1) {
+    return `${baseName} (${quantity} x ${unitPrice.toFixed(0)})`;
+  }
+  return baseName;
+};

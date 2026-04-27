@@ -1,0 +1,116 @@
+.headerActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.changeCardBtn {
+  background-color: #297160 !important;
+  border-color: #297160 !important;
+  border-radius: 8px;
+  height: 40px;
+}
+
+.editForm {
+  margin-top: 24px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.editSection {
+  margin-bottom: 24px;
+}
+
+.editLabel {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  color: #1e293b;
+  margin-bottom: 12px;
+}
+
+.sliderWrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.slider {
+  flex: 1;
+}
+
+.sliderVal {
+  font-weight: 700;
+  color: #297160;
+  min-width: 60px;
+}
+
+.toggleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.extrasGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.overrideNotice {
+  margin-top: 20px;
+}
+
+.overrideDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.overrideText {
+  margin: 0;
+  font-size: 14px;
+}
+
+.overrideExtras {
+  margin-top: 4px;
+}
+
+.overrideList {
+  margin: 4px 0 0 0;
+  padding-left: 20px;
+  font-size: 14px;
+  color: #475569;
+}
+
+.overrideList li {
+  margin-bottom: 2px;
+}
+
+@media (max-width: 768px) {
+  .headerActions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .changeCardBtn {
+    width: 100%;
+  }
+
+  .extrasGrid {
+    grid-template-columns: 1fr;
+  }
+}

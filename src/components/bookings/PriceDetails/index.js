@@ -3,6 +3,7 @@
  */
 
 import { useTranslation } from "@/hooks/useTranslation";
+import { formatExtraServiceName, getExtraServiceTotal } from "@/utils/pricing";
 import styles from '@/styles/bookings/PriceDetails.module.css';
 
 const PriceDetails = ({ booking }) => {
@@ -16,10 +17,13 @@ const PriceDetails = ({ booking }) => {
     totalAmount,
     priceBreakdown,
     parkingSurcharge,
+    weekendSurcharge,
     petSurcharge
   } = booking;
 
   const extras = priceBreakdown?.extras || [];
+  const surcharges = priceBreakdown?.surcharges || {};
+  const weekendSurchargeAmount = booking?.surcharges?.weekendSurcharge || surcharges?.weekendSurcharge || weekendSurcharge;
 
   return (
     <div className={styles.section}>
@@ -39,16 +43,33 @@ const PriceDetails = ({ booking }) => {
       </div>
 
       {/* Extras */}
-      {extras.length > 0 && extras.map((extra, index) => (
-        <div className={styles.detailRow} key={index}>
-          <span className={styles.label}>{extra.name || t("bookingFlow.extraServiceLabel", { fallback: 'Extra Service' })}</span>
-          <span className={styles.value}>
-            {t('bookingFlow.currencyFormatPlus', { price: parseFloat(extra.price).toFixed(2), fallback: `+NOK ${parseFloat(extra.price).toFixed(2)}` })}
-          </span>
-        </div>
-      ))}
+      {extras.length > 0 && extras.map((extra, index) => {
+        const lineTotal = getExtraServiceTotal(extra);
+        const formattedName = formatExtraServiceName(extra, t);
+
+        return (
+          <div className={styles.detailRow} key={index}>
+            <span className={styles.label}>{formattedName}</span>
+            <span className={styles.value}>
+              {t('bookingFlow.currencyFormatPlus', {
+                price: lineTotal.toFixed(2),
+                fallback: `+NOK ${lineTotal.toFixed(2)}`
+              })}
+            </span>
+          </div>
+        );
+      })}
 
       {/* Surcharges */}
+      {(parseFloat(weekendSurchargeAmount) > 0) && (
+        <div className={styles.detailRow}>
+          <span className={styles.label}>{t("bookingFlow.weekendSurchargeLabel", { fallback: "Helgetillegg" })}</span>
+          <span className={styles.value}>
+            {t('bookingFlow.currencyFormatPlus', { price: parseFloat(weekendSurchargeAmount).toFixed(2), fallback: `+NOK ${parseFloat(weekendSurchargeAmount).toFixed(2)}` })}
+          </span>
+        </div>
+      )}
+
       {(parseFloat(parkingSurcharge) > 0) && (
         <div className={styles.detailRow}>
           <span className={styles.label}>{t("bookingFlow.parkingSurchargeLabel", { fallback: "Parkeringsgebyr" })}</span>

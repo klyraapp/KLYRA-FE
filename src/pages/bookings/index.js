@@ -45,7 +45,11 @@ const BookingsPage = () => {
   const bookingsList = Array.isArray(bookings) ? bookings : [];
 
   const currentBookings = bookingsList.filter(b =>
-    [BookingStatus.PENDING, BookingStatus.CONFIRMED, BookingStatus.IN_PROGRESS].includes(b?.status)
+    [BookingStatus.CONFIRMED, BookingStatus.IN_PROGRESS].includes(b?.status)
+  );
+
+  const pendingBookings = bookingsList.filter(b =>
+    [BookingStatus.PENDING].includes(b?.status)
   );
 
   const pastBookings = bookingsList.filter(b =>
@@ -73,6 +77,20 @@ const BookingsPage = () => {
                 <h2 className={styles.sectionHeading}>{t("bookingFlow.currentTab", { fallback: "Current" })}</h2>
                 <Row gutter={[16, 16]}>
                   {Array.isArray(currentBookings) && currentBookings.map(booking => (
+                    <Col xs={24} sm={12} lg={8} key={booking?.id || Math.random()}>
+                      <BookingCard booking={booking} onRefresh={handleRefresh} />
+                    </Col>
+                  ))}
+                </Row>
+              </div>
+            )}
+
+            {/* Pending Section */}
+            {pendingBookings.length > 0 && (
+              <div className={styles.section}>
+                <h2 className={styles.sectionHeading}>{t("bookingFlow.pendingStatus", { fallback: "Waiting payment" })}</h2>
+                <Row gutter={[16, 16]}>
+                  {Array.isArray(pendingBookings) && pendingBookings.map(booking => (
                     <Col xs={24} sm={12} lg={8} key={booking?.id || Math.random()}>
                       <BookingCard booking={booking} onRefresh={handleRefresh} />
                     </Col>

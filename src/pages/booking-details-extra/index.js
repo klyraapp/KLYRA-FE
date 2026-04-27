@@ -214,7 +214,6 @@ const BookingDetailsExtra = () => {
               onChange={handleOtherInfoChange}
               placeholder={t('bookingFlow.otherInformation', { fallback: 'Other information' })}
               className={styles.textArea}
-              rows={4}
             />
           </div>
         </div>

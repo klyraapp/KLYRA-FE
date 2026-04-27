@@ -15,7 +15,8 @@ const PrimaryNavigationButtons = ({
   nextLoading,
   backDisabled,
   nextTooltip,
-  nextText
+  nextText,
+  backText
 }) => {
   const { t } = useTranslation();
 
@@ -39,7 +40,7 @@ const PrimaryNavigationButtons = ({
         size="large"
         disabled={backDisabled || nextLoading}
       >
-        {t('bookingFlow.back', { fallback: 'Back' })}
+        {backText || t('bookingFlow.back', { fallback: 'Back' })}
       </Button>
       {nextTooltip && nextDisabled ? (
         <Tooltip title={nextTooltip} placement="top">

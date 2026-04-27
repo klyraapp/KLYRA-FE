@@ -1,5 +1,6 @@
 import { PERMISSIONS } from "@/utils/constant";
-import { FiDroplet, FiHome, FiLogOut, FiSquare } from "react-icons/fi";
+import { FiArchive, FiBox, FiDroplet, FiHome, FiLogOut, FiPackage, FiSquare } from "react-icons/fi";
+import { GiWashingMachine } from "react-icons/gi";
 
 const permissionMap = new Map([
   [PERMISSIONS.ADD_USERS, "Add User"],
@@ -83,4 +84,17 @@ export const getServiceIcon = (serviceName) => {
   if (normalized.includes("move") || normalized.includes("flytte")) return FiLogOut;
 
   return FiHome;
+};
+
+const EXTRA_SERVICE_ICON_MAP = {
+  "Inside Oven": FiBox,
+  "Inside Fridge": FiPackage,
+  "Inside Cabinets": FiArchive,
+  "Interior Windows": FiSquare,
+  "Laundry & Ironing": GiWashingMachine,
+  "Laundry Service": GiWashingMachine,
+};
+
+export const getExtraServiceIcon = (serviceName) => {
+  return EXTRA_SERVICE_ICON_MAP[serviceName] || FiBox;
 };

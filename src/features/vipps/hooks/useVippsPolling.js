@@ -11,7 +11,21 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { clearVippsBookingId, fetchBookingStatus } from '../services/vippsService';
+import {
+  clearKlarnaBookingId,
+  clearVippsBookingId,
+  fetchBookingStatus,
+} from '../services/vippsService';
+
+/**
+ * Clears any persisted pending-booking ids from localStorage regardless of
+ * which redirect-based provider owned the session. Safe to call unconditionally
+ * once a terminal state is reached.
+ */
+const clearAllPendingBookingIds = () => {
+  clearVippsBookingId();
+  clearKlarnaBookingId();
+};
 
 /**
  * @typedef {'idle' | 'polling' | 'paid' | 'failed' | 'cancelled' | 'timeout' | 'error'} PollState
@@ -64,18 +78,18 @@ const useVippsPolling = (bookingId) => {
 
       if (['PAID', 'SUCCESS', 'CAPTURED', 'CONFIRMED'].includes(rawStatus)) {
         stopPolling();
-        clearVippsBookingId();
+        clearAllPendingBookingIds();
         setPollState('paid');
       } else if (
         ['FAILED', 'REJECTED', 'ERROR'].includes(rawStatus) ||
         data?.payment?.failureReason
       ) {
         stopPolling();
-        clearVippsBookingId();
+        clearAllPendingBookingIds();
         setPollState('failed');
       } else if (['CANCELLED', 'VOIDED', 'EXPIRED'].includes(rawStatus)) {
         stopPolling();
-        clearVippsBookingId();
+        clearAllPendingBookingIds();
         setPollState('cancelled');
       } else if (rawStatus === 'PENDING' || rawStatus === 'UNPAID') {
         stopPolling();

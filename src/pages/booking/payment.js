@@ -1,7 +1,16 @@
 /**
  * Payment Page - Step 7 of booking flow
+ *
  * Handles price calculation, promo codes, offers, payment method selection,
- * and Stripe/Vipps payment integration
+ * and all payment integrations:
+ *   - Stripe Card     (inline PaymentElement, no redirect)
+ *   - Stripe Klarna   (inline PaymentElement → Stripe redirects to Klarna)
+ *   - Vipps           (backend returns redirectUrl, full-page navigation)
+ *
+ * Card and Klarna share the exact same "create booking → render Stripe
+ * PaymentElement" plumbing — the only differences are the payment method
+ * sent to the backend and the return URL + billing details passed to Stripe
+ * for Klarna.
  */
 
 import { calculateBookingPrice } from "@/api/bookingsApi";
@@ -15,9 +24,13 @@ import PrimaryNavigationButtons from "@/components/common/Booking/PrimaryNavigat
 import SelectedServiceCard from "@/components/common/Booking/SelectedServiceCard";
 import PaymentElementForm from "@/components/payment/PaymentElementForm";
 import StripeProvider from "@/components/payment/StripeProvider";
-import { VippsRedirectOverlay } from "@/features/vipps";
-import { persistVippsBookingId } from "@/features/vipps/services/vippsService";
-import { PaymentMethodEnum } from "@/features/vipps/types";
+import {
+  ONE_TIME_ONLY_PAYMENT_METHODS,
+  PaymentMethodEnum,
+  PaymentRedirectOverlay,
+  persistKlarnaBookingId,
+  persistVippsBookingId,
+} from "@/features/vipps";
 import { formatLongDate } from "@/helpers/dateFormatter";
 import { useServicePricing } from "@/hooks/useServicePricing";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -34,14 +47,45 @@ import styles from "@/styles/booking/Payment.module.css";
 import { getServiceIcon } from "@/utils/utils";
 import { Alert, message, Spin } from "antd";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
-import {
-  FiChevronDown,
-  FiInfo
-} from "react-icons/fi";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { FiChevronDown, FiInfo } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 
+const ISO_COUNTRY_BY_NAME = {
+  NORWAY: "NO",
+  SWEDEN: "SE",
+  DENMARK: "DK",
+  FINLAND: "FI",
+  GERMANY: "DE",
+  FRANCE: "FR",
+  NETHERLANDS: "NL",
+  BELGIUM: "BE",
+  AUSTRIA: "AT",
+  SWITZERLAND: "CH",
+  SPAIN: "ES",
+  ITALY: "IT",
+  PORTUGAL: "PT",
+  POLAND: "PL",
+  CZECHIA: "CZ",
+  GREECE: "GR",
+  IRELAND: "IE",
+  ROMANIA: "RO",
+  "UNITED KINGDOM": "GB",
+  UK: "GB",
+  "GREAT BRITAIN": "GB",
+  "UNITED STATES": "US",
+  USA: "US",
+  CANADA: "CA",
+  AUSTRALIA: "AU",
+  "NEW ZEALAND": "NZ",
+};
 
+const normalizeCountryCode = (country) => {
+  if (!country) return "NO";
+  const trimmed = String(country).trim();
+  if (trimmed.length === 2) return trimmed.toUpperCase();
+  return ISO_COUNTRY_BY_NAME[trimmed.toUpperCase()] || "NO";
+};
 
 const PaymentPage = () => {
   const router = useRouter();
@@ -63,9 +107,10 @@ const PaymentPage = () => {
   const numberOfBathrooms = useSelector(
     (state) => state.booking.numberOfBathrooms,
   );
-  const selectedExtraServiceIds = useSelector(
-    (state) => state.booking.selectedExtraServiceIds,
+  const selectedExtraServices = useSelector(
+    (state) => state.booking.selectedExtraServices,
   );
+  const inEveryRrecurring = useSelector((state) => state.booking.inEveryRrecurring);
   const hasFreeParking = useSelector((state) => state.booking.hasFreeParking);
   const hasPets = useSelector((state) => state.booking.hasPets);
   const accessMethod = useSelector((state) => state.booking.accessMethod);
@@ -104,15 +149,16 @@ const PaymentPage = () => {
   const [bookingDetailsExpanded, setBookingDetailsExpanded] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  // Stripe payment state
+  // Stripe payment state (shared between Card and Klarna)
   const [clientSecret, setClientSecret] = useState(null);
   const [bookingId, setBookingId] = useState(null);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [isCreatingBooking, setIsCreatingBooking] = useState(false);
   const [bookingError, setBookingError] = useState(null);
 
-  // Vipps redirect state — shown while navigating to Vipps payment page
-  const [isVippsRedirecting, setIsVippsRedirecting] = useState(false);
+  // Redirect-overlay state — shown while navigating to an external provider
+  // (Vipps hosted page / Klarna hosted checkout).
+  const [redirectingProvider, setRedirectingProvider] = useState(null);
 
   useEffect(() => {
     if (router.isReady && !selectedService) {
@@ -135,7 +181,7 @@ const PaymentPage = () => {
 
       const payload = {
         serviceId: selectedService?.id,
-        extraServiceIds: selectedExtraServiceIds || [],
+        selectedExtraService: selectedExtraServices || [],
         hasFreeParking: hasFreeParking || false,
         hasPets: hasPets || false,
         promoCode,
@@ -144,6 +190,7 @@ const PaymentPage = () => {
         areaSqm: areaSqm || 130,
         isRecurring: !!isRecurring,
         recurringInterval: recurringInterval || null,
+        bookingDate,
       };
 
       try {
@@ -166,13 +213,14 @@ const PaymentPage = () => {
     },
     [
       selectedService,
-      selectedExtraServiceIds,
+      selectedExtraServices,
       hasFreeParking,
       hasPets,
       accommodationType,
       areaSqm,
       isRecurring,
       recurringInterval,
+      bookingDate,
     ],
   );
 
@@ -292,7 +340,7 @@ const PaymentPage = () => {
   const handlePaymentMethodChange = (method) => {
     setPaymentMethodLocal(method);
     dispatch(setPaymentMethod(method));
-    // Reset Stripe payment state when changing payment method
+    // Reset any in-flight Stripe payment state whenever the method changes.
     setShowPaymentForm(false);
     setClientSecret(null);
     setBookingId(null);
@@ -305,82 +353,88 @@ const PaymentPage = () => {
       setClientSecret(null);
       setBookingId(null);
       setBookingError(null);
+      setRedirectingProvider(null);
       return;
     }
     router.push("/booking-customer-info");
   };
 
   const handleNext = async () => {
-    if (paymentMethodLocal === PaymentMethodEnum.CARD) {
-      await createBookingAndInitiatePayment();
-    } else if (paymentMethodLocal === PaymentMethodEnum.VIPPS) {
+    if (paymentMethodLocal === PaymentMethodEnum.VIPPS) {
       await createVippsBookingAndRedirect();
+      return;
+    }
+    if (
+      paymentMethodLocal === PaymentMethodEnum.CARD ||
+      paymentMethodLocal === PaymentMethodEnum.KLARNA
+    ) {
+      await createStripeBookingAndShowForm(paymentMethodLocal);
     }
   };
 
   /**
+   * Builds the booking payload shared by every payment method. Only the
+   * `paymentMethod` field and provider-specific additions (e.g. `returnUrl`
+   * for Vipps) vary between flows.
+   */
+  const buildBaseBookingPayload = (paymentMethod) => ({
+    serviceId: selectedService?.id,
+    selectedExtraService: selectedExtraServices || [],
+    inEveryRrecurring: Boolean(inEveryRrecurring),
+    accommodationType: accommodationType || "HOUSE",
+    numberOfBathrooms: numberOfBathrooms || 1,
+    areaSqm: areaSqm || 130,
+    hasFreeParking: Boolean(hasFreeParking),
+    hasPets: Boolean(hasPets),
+    isRecurring: !!isRecurring,
+    recurringInterval: isRecurring ? recurringInterval : null,
+    accessMethod: accessMethod || "MEET_AT_DOOR",
+    specialInstructions: specialInstructions || "",
+    bookingDate: bookingDate,
+    startTime: preferredTime || "09:00:00",
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    phone: phone,
+    serviceStreetAddress: serviceStreetAddress,
+    servicePostalCode: servicePostalCode,
+    promoCode: promoCodeRedux || "",
+    offerId: offerIdRedux || 0,
+    paymentMethod,
+    webFlow: true,
+  });
+
+  /**
    * Handles the Vipps booking creation and redirect flow.
-   * 1. Builds the booking payload with paymentMethod: VIPPS and a returnUrl
-   *    so Vipps knows where to send the user after payment approval.
-   * 2. Calls the API and expects a redirectUrl in the response.
-   * 3. Persists bookingId to localStorage for the result page.
-   * 4. Resets loading state, shows the overlay, then navigates to Vipps.
+   *   1. Calls the backend with paymentMethod: VIPPS + returnUrl.
+   *   2. Expects a redirectUrl in the response.
+   *   3. Persists bookingId to localStorage so /payment/result can read it
+   *      even if Vipps strips query params.
+   *   4. Shows the branded overlay, then navigates to Vipps.
    */
   const createVippsBookingAndRedirect = async () => {
     setIsCreatingBooking(true);
     setBookingError(null);
 
-    // Build the absolute return URL that Vipps will redirect to after payment.
-    // /payment/result will poll the booking status and show the correct UI.
-    // We use the base URL here; bookingId is appended after the API call.
     const baseReturnUrl = `${window.location.origin}/payment/result`;
 
     const bookingPayload = {
-      serviceId: selectedService?.id,
-      extraServiceIds: selectedExtraServiceIds || [],
-      accommodationType: accommodationType || "HOUSE",
-      numberOfBathrooms: numberOfBathrooms || 1,
-      areaSqm: areaSqm || 130,
-      hasFreeParking: Boolean(hasFreeParking),
-      hasPets: Boolean(hasPets),
-      isRecurring: !!isRecurring,
-      recurringInterval: isRecurring ? recurringInterval : null,
-      accessMethod: accessMethod || "MEET_AT_DOOR",
-      specialInstructions: specialInstructions || "",
-      bookingDate: bookingDate,
-      startTime: preferredTime || "09:00:00",
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      phone: phone,
-      serviceStreetAddress: serviceStreetAddress,
-      servicePostalCode: servicePostalCode,
-      promoCode: promoCodeRedux || "",
-      offerId: offerIdRedux || 0,
-      paymentMethod: PaymentMethodEnum.VIPPS,
-      // returnUrl tells Vipps where to redirect the user after payment
+      ...buildBaseBookingPayload(PaymentMethodEnum.VIPPS),
       returnUrl: baseReturnUrl,
-      webFlow: true,
     };
 
     try {
       const { redirectUrl, bookingId: newBookingId } =
         await createVippsBooking(bookingPayload, isGuest);
 
-      // Persist bookingId to localStorage as a reliable fallback.
-      // The result page will also read bookingId from the URL query param
-      // if Vipps appends it, but localStorage ensures it works regardless.
       if (newBookingId) {
         persistVippsBookingId(newBookingId);
       }
 
-      // Reset loading state BEFORE showing overlay to prevent flash errors
       setIsCreatingBooking(false);
+      setRedirectingProvider('vipps');
 
-      // Show the branded overlay while the browser navigates away
-      setIsVippsRedirecting(true);
-
-      // Small delay ensures the overlay renders before navigation begins
+      // Small delay ensures the overlay renders before navigation begins.
       setTimeout(() => {
         window.location.href = redirectUrl;
       }, 400);
@@ -396,52 +450,38 @@ const PaymentPage = () => {
     }
   };
 
-
-  const createBookingAndInitiatePayment = async () => {
+  /**
+   * Creates a booking for Stripe-backed payment methods (Card or Klarna).
+   * Both share the exact same backend contract: send `paymentMethod`, receive
+   * `clientSecret` + `bookingId`, render the PaymentElement inline. Klarna
+   * specifically will trigger a redirect on submit; Card will not.
+   */
+  const createStripeBookingAndShowForm = async (paymentMethod) => {
     setIsCreatingBooking(true);
     setBookingError(null);
 
-    const bookingPayload = {
-      serviceId: selectedService?.id,
-      extraServiceIds: selectedExtraServiceIds || [],
-      accommodationType: accommodationType || "HOUSE",
-      numberOfBathrooms: numberOfBathrooms || 1,
-      areaSqm: areaSqm || 130,
-      hasFreeParking: Boolean(hasFreeParking),
-      hasPets: Boolean(hasPets),
-      isRecurring: !!isRecurring,
-      recurringInterval: isRecurring ? recurringInterval : null,
-      accessMethod: accessMethod || "MEET_AT_DOOR",
-      specialInstructions: specialInstructions || "",
-      bookingDate: bookingDate,
-      startTime: preferredTime || "09:00:00",
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      phone: phone,
-      serviceStreetAddress: serviceStreetAddress,
-      servicePostalCode: servicePostalCode,
-      promoCode: promoCodeRedux || "",
-      offerId: offerIdRedux || 0,
-      paymentMethod: "CARD",
-      webFlow: true,
-    };
+    const bookingPayload = buildBaseBookingPayload(paymentMethod);
 
     try {
       const response = await createBookingWithPayment(bookingPayload, isGuest);
       const bookingData = response.data || response;
 
-      if (bookingData?.payment?.clientSecret) {
-        setClientSecret(bookingData.payment.clientSecret);
-        setBookingId(bookingData.id);
-        setShowPaymentForm(true);
-      } else if (bookingData?.clientSecret) {
-        setClientSecret(bookingData.clientSecret);
-        setBookingId(bookingData.booking?.id || bookingData.id);
-        setShowPaymentForm(true);
-      } else {
-        throw new Error(t("messages.noClientSecret", { fallback: "No client secret received from server" }));
+      const secret =
+        bookingData?.payment?.clientSecret ?? bookingData?.clientSecret;
+      const newBookingId =
+        bookingData?.id ?? bookingData?.booking?.id ?? bookingData?.bookingId;
+
+      if (!secret) {
+        throw new Error(
+          t("messages.noClientSecret", {
+            fallback: "No client secret received from server",
+          }),
+        );
       }
+
+      setClientSecret(secret);
+      setBookingId(newBookingId);
+      setShowPaymentForm(true);
     } catch (error) {
       const errorMessage =
         error.response?.data?.message ||
@@ -455,24 +495,100 @@ const PaymentPage = () => {
   };
 
   const handlePaymentSuccess = (paymentIntent) => {
+    setRedirectingProvider(null);
     message.success(t("bookingFlow.paymentSuccessful", { fallback: "Payment successful!" }));
     router.push(`/booking/confirmation?bookingId=${bookingId}`);
   };
 
   const handlePaymentError = (error) => {
+    setRedirectingProvider(null);
     message.error(error.message || t("messages.paymentFailed", { fallback: "Payment failed. Please try again." }));
   };
 
+  /**
+   * Called by PaymentElementForm the moment Stripe is about to redirect the
+   * browser away (Klarna). Persists the bookingId for the result page and
+   * shows the Klarna-branded overlay until the browser navigates.
+   */
+  const handleStripeRedirecting = () => {
+    if (paymentMethodLocal !== PaymentMethodEnum.KLARNA) return;
+    if (bookingId) persistKlarnaBookingId(bookingId);
+    setRedirectingProvider('klarna');
+  };
+
+  /**
+   * Recurring bookings can only be paid by Card (subscription requires a
+   * reusable, chargeable-off-session payment method). Any one-time-only
+   * method is hidden from the selector and auto-switched away from if the
+   * user had it selected before toggling recurring.
+   */
   const forceCardPayment =
     (selectedService?.allowRecurringBookings && !selectedService?.allowOneTimeBookings) ||
     (selectedService?.allowRecurringBookings && isRecurring);
 
-  // Enforce CARD payment for recurring bookings
+  const hiddenPaymentMethods = useMemo(
+    () => (forceCardPayment ? ONE_TIME_ONLY_PAYMENT_METHODS : []),
+    [forceCardPayment],
+  );
+
   useEffect(() => {
-    if (forceCardPayment && paymentMethodLocal && paymentMethodLocal !== "CARD") {
-      handlePaymentMethodChange("CARD");
+    if (
+      forceCardPayment &&
+      paymentMethodLocal &&
+      paymentMethodLocal !== PaymentMethodEnum.CARD
+    ) {
+      handlePaymentMethodChange(PaymentMethodEnum.CARD);
     }
   }, [forceCardPayment, paymentMethodLocal]);
+
+  /**
+   * Stripe configuration for the currently-active payment method.
+   *   - Card: no redirect expected; legacy confirmation URL is safe to use.
+   *   - Klarna: Stripe will redirect to Klarna, then Klarna will bounce the
+   *     user back to our /payment/result page where we reconcile status via
+   *     polling + stripe.retrievePaymentIntent.
+   */
+  const stripeFormConfig = useMemo(() => {
+    if (paymentMethodLocal !== PaymentMethodEnum.KLARNA) {
+      return { returnUrl: undefined, billingDetails: undefined };
+    }
+
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
+
+    // Klarna requires billing name, email, and country. Stripe rejects empty
+    // strings for `country`, so we fall back to 'NO' (our operating market)
+    // when the user hasn't populated Redux with a country code.
+    const billingName = [firstName, lastName]
+      .filter(Boolean)
+      .join(' ')
+      .trim() || undefined;
+
+    return {
+      returnUrl: `${origin}/payment/result?bookingId=${bookingId ?? ''}`,
+      billingDetails: {
+        name: billingName,
+        email: email || undefined,
+        phone: phone || undefined,
+        address: {
+          line1: serviceStreetAddress || undefined,
+          city: serviceCity || undefined,
+          postal_code: servicePostalCode || undefined,
+          country: normalizeCountryCode(serviceCountry),
+        },
+      },
+    };
+  }, [
+    paymentMethodLocal,
+    bookingId,
+    firstName,
+    lastName,
+    email,
+    phone,
+    serviceStreetAddress,
+    serviceCity,
+    servicePostalCode,
+    serviceCountry,
+  ]);
 
   if (!selectedService) {
     return null;
@@ -484,8 +600,9 @@ const PaymentPage = () => {
 
   return (
     <>
-      {/* Vipps redirect overlay — rendered as a sibling so no hooks are skipped */}
-      {isVippsRedirecting && <VippsRedirectOverlay />}
+      {redirectingProvider && (
+        <PaymentRedirectOverlay provider={redirectingProvider} />
+      )}
 
       <div className={styles.pageWrapper}>
         <HeaderBar currentStep={5} />
@@ -528,14 +645,6 @@ const PaymentPage = () => {
                   {servicePostalCode || "333077"}
                 </span>
               </div>
-              {/* {isRecurring && recurringInterval && (
-                <div className={styles.infoRow}>
-                  <span className={styles.infoLabel}>{t('bookingFlow.cleaningInterval', { fallback: 'Interval' })}</span>
-                  <span className={styles.infoValue}>
-                    {t(`bookingFlow.${recurringInterval.toLowerCase()}`, { fallback: recurringInterval })}
-                  </span>
-                </div>
-              )} */}
             </div>
 
             <div
@@ -565,13 +674,16 @@ const PaymentPage = () => {
             )}
           </div>
 
-          {/* Show Stripe Payment Form when card payment initiated */}
           {showPaymentForm && clientSecret ? (
             <div className={styles.stripeSection}>
               <h3 className={styles.sectionTitle}>
-                {t("bookingFlow.enterCardDetails", {
-                  fallback: "Enter Card Details",
-                })}
+                {paymentMethodLocal === PaymentMethodEnum.KLARNA
+                  ? t("bookingFlow.confirmKlarnaPayment", {
+                      fallback: "Confirm Klarna Payment",
+                    })
+                  : t("bookingFlow.enterCardDetails", {
+                      fallback: "Enter Card Details",
+                    })}
               </h3>
               {isRecurring && (
                 <div className={styles.recurringTooltip}>
@@ -586,7 +698,18 @@ const PaymentPage = () => {
                   bookingId={bookingId}
                   onSuccess={handlePaymentSuccess}
                   onError={handlePaymentError}
+                  onRedirecting={handleStripeRedirecting}
+                  notifyRedirectOnSubmit={paymentMethodLocal === PaymentMethodEnum.KLARNA}
+                  returnUrl={stripeFormConfig.returnUrl}
+                  billingDetails={stripeFormConfig.billingDetails}
                   disabled={isCreatingBooking}
+                  submitLabel={
+                    paymentMethodLocal === PaymentMethodEnum.KLARNA
+                      ? t("bookingFlow.payWithKlarna", {
+                          fallback: "Pay with Klarna",
+                        })
+                      : undefined
+                  }
                 />
               </StripeProvider>
             </div>
@@ -616,7 +739,7 @@ const PaymentPage = () => {
               <PaymentMethodSelector
                 selectedMethod={paymentMethodLocal}
                 onChange={handlePaymentMethodChange}
-                hiddenMethods={forceCardPayment ? ["VIPPS"] : []}
+                hiddenMethods={hiddenPaymentMethods}
               />
 
               {bookingError && (

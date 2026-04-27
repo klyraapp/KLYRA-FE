@@ -38,6 +38,40 @@ const subscriptionService = {
   },
 
   /**
+   * Fetches specific subscription details.
+   */
+  getSubscriptionDetails: async (id) => {
+    try {
+      const response = await instance.get(`/subscription/${id}`);
+      const data = response.data;
+      
+      // Map new structure to existing structure expected by components
+      return {
+        ...data,
+        areaSqm: data.areaSqm || data.lastBookingAreaSqm,
+        extraServices: data.associatedService?.extraServices || data.extraServices || [],
+        service: data.associatedService || data.service
+      };
+    } catch (error) {
+      console.error(`Error fetching subscription ID ${id}:`, error);
+      throw error;
+    }
+  },
+
+  /**
+   * Updates subscription details (area, extras, recurring flag).
+   */
+  updateSubscription: async (id, data) => {
+    try {
+      const response = await instance.patch(`/subscription/${id}/update-subscriptions-future-bookings`, data);
+      return response.data;
+    } catch (error) {
+      console.error(`Error updating subscription ID ${id}:`, error);
+      throw error;
+    }
+  },
+
+  /**
    * Resumes an expired subscription.
    * @param {number|string} id - The ID of the subscription.
    * @returns {Promise<Object>} Response object.

@@ -33,6 +33,22 @@ const bookingService = {
       throw error;
     }
   },
+
+  /**
+   * Retries the payment for a pending booking.
+   * @param {string|number} id - The ID of the booking.
+   * @returns {Promise<Object>} Response data.
+   */
+  retryBookingPayment: async (id) => {
+    if (!id) throw new Error("Booking ID is required for retry");
+    try {
+      const response = await instance.patch(`bookings/${id}/retry-booking-payment`);
+      return response.data?.data || response.data;
+    } catch (error) {
+      console.error(`Error retrying booking payment for ID ${id}:`, error);
+      throw error;
+    }
+  },
 };
 
 export default bookingService;

@@ -51,9 +51,14 @@ const BookingDate = () => {
 
   // Fetch disabled dates from API
   useEffect(() => {
+    if (!selectedService?.id) {
+      setCalendarLoading(false);
+      return;
+    }
+
     const fetchDisabledDates = async () => {
       try {
-        const response = await getCalendarDisabledDates();
+        const response = await getCalendarDisabledDates(selectedService.id);
         const data = response?.data;
         if (data) {
           setApiDisabledDates(data.disabledDates || []);
@@ -72,7 +77,7 @@ const BookingDate = () => {
     };
 
     fetchDisabledDates();
-  }, []);
+  }, [selectedService?.id]);
 
   // Create a Set for O(1) lookup of disabled date strings
   const disabledDateSet = useMemo(
@@ -191,6 +196,13 @@ const BookingDate = () => {
 
   const ServiceIcon = getServiceIcon(selectedService.name);
 
+  // Check if the selected date is Saturday (6) or Sunday (0)
+  const isSelectedWeekend = useMemo(() => {
+    if (!selectedDate) return false;
+    const day = selectedDate.getDay();
+    return day === 0 || day === 6;
+  }, [selectedDate]);
+
   return (
     <div className={styles.pageWrapper}>
       <HeaderBar currentStep={3} />
@@ -204,6 +216,20 @@ const BookingDate = () => {
 
         <div className={styles.formSection}>
           <h2 className={styles.sectionTitle}>{t('bookingFlow.selectDate', { fallback: 'Select Date' })}</h2>
+
+          {isSelectedWeekend && (
+            <Alert
+              description={
+                <span className={styles.alertText}>
+                  {t('bookingFlow.weekendSurchargeNotice', { fallback: "Please note that an extra surcharge will be applied for bookings on Saturdays and Sundays." })}
+                </span>
+              }
+              type="info"
+              showIcon
+              className={styles.alert}
+              style={{ marginBottom: '16px' }}
+            />
+          )}
 
           <Alert
             description={

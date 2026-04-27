@@ -8,16 +8,17 @@ import { useTranslation } from "@/hooks/useTranslation";
 import useToast from '@/hooks/useToast';
 import subscriptionService from '@/services/subscriptionService';
 import styles from '@/styles/subscriptions/SubscriptionCard.module.css';
-import { CalendarOutlined, CreditCardOutlined, ReloadOutlined, UserOutlined } from '@ant-design/icons';
+import { CalendarOutlined, CreditCardOutlined, ReloadOutlined, UserOutlined, AppstoreAddOutlined } from '@ant-design/icons';
 import { Button, Card } from 'antd';
-import dayjs from 'dayjs';
 import { useState } from 'react';
 import StripeCardUpdateModal from '../StripeCardUpdateModal';
+import SubscriptionExtraServicesModal from '../SubscriptionExtraServicesModal';
 
 const SubscriptionCard = ({ subscription, onRefresh }) => {
   const { t, currentLanguage } = useTranslation();
   const toast = useToast();
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
+  const [isExtraServicesModalVisible, setIsExtraServicesModalVisible] = useState(false);
   const [retryLoading, setRetryLoading] = useState(false);
 
   const {
@@ -39,7 +40,7 @@ const SubscriptionCard = ({ subscription, onRefresh }) => {
     switch (status) {
       case 'ACTIVE': return t("status.paid", { fallback: 'Paid' });
       case 'INACTIVE': return t("status.inactive", { fallback: 'Inactive' });
-      case 'PENDING': return t("status.unpaid", { fallback: 'Unpaid' });
+      case 'PENDING': return t("status.unpaid", { fallback: 'Waiting payment' });
       case 'EXPIRED': return t("status.expired", { fallback: 'Expired' });
       case 'CANCELLED': return t("status.cancelled", { fallback: 'Cancelled' });
       default: return status;
@@ -54,10 +55,6 @@ const SubscriptionCard = ({ subscription, onRefresh }) => {
       case 'MONTHLY': return t("bookingFlow.monthly", { fallback: 'Monthly' });
       default: return interval;
     }
-  };
-
-  const handleUpdateClick = () => {
-    setIsUpdateModalVisible(true);
   };
 
   const handleRetryClick = async () => {
@@ -75,46 +72,46 @@ const SubscriptionCard = ({ subscription, onRefresh }) => {
   };
 
   return (
-    <Card
-      className={styles.card}
-      bodyStyle={{ padding: '16px' }}
-      bordered={false}
-    >
-      <div className={`${styles.header} ${isPast ? styles.headerPast : styles.headerCurrent}`}>
-        <span className={styles.headerTitle}>{t("bookingFlow.subscriptionNumber", { subscriptionNumber, fallback: `Subscription #${subscriptionNumber}` })}</span>
-        <span className={styles.headerPrice}>{t("status.status", { fallback: 'Status' })}: {getHeaderTitle(status)}</span>
-      </div>
-
-      <div className={styles.content}>
-        <div className={styles.serviceRow}>
-          <span className={styles.serviceName}>{formatInterval(recurringIntervalType)}</span>
-          <BookingStatusBadge status={status} />
+    <>
+      <Card
+        className={styles.card}
+        bodyStyle={{ padding: '16px' }}
+        bordered={false}
+      >
+        <div className={`${styles.header} ${isPast ? styles.headerPast : styles.headerCurrent}`}>
+          <span className={styles.headerTitle}>{t("bookingFlow.subscriptionNumber", { subscriptionNumber, fallback: `Subscription #${subscriptionNumber}` })}</span>
+          <span className={styles.headerPrice}>{t("status.status", { fallback: 'Status' })}: {getHeaderTitle(status)}</span>
         </div>
 
-        <div className={styles.customerName}>
-          <UserOutlined className={styles.icon} style={{ marginRight: '8px' }} />
-          {(contactFirstName || contactLastName) ? `${contactFirstName || ''} ${contactLastName || ''}` : t('common.anonymous', { fallback: 'No Name' })}
-        </div>
+        <div className={styles.content}>
+          <div className={styles.serviceRow}>
+            <span className={styles.serviceName}>{formatInterval(recurringIntervalType)}</span>
+            <BookingStatusBadge status={status} />
+          </div>
 
-        <div className={styles.infoRow}>
-          <CalendarOutlined className={styles.icon} />
-          <span>
-            {t("bookingFlow.nextCleaning", { fallback: "Next schedule:" })} {displayDate ? formatLongDate(displayDate, currentLanguage) : t("bookingFlow.notScheduled", { fallback: "Not Scheduled Yet" })}
-          </span>
-        </div>
+          <div className={styles.customerName}>
+            <UserOutlined className={styles.icon} style={{ marginRight: '8px' }} />
+            {(contactFirstName || contactLastName) ? `${contactFirstName || ''} ${contactLastName || ''}` : t('common.anonymous', { fallback: 'No Name' })}
+          </div>
 
-        {nextInvoicingDate && (
           <div className={styles.infoRow}>
             <CalendarOutlined className={styles.icon} />
             <span>
-              {t("bookingFlow.nextPaymentDeduction", { fallback: "Next payment will deduct on:" })} {formatLongDate(nextInvoicingDate, currentLanguage)}
+              {t("bookingFlow.nextCleaning", { fallback: "Next schedule:" })} {displayDate ? formatLongDate(displayDate, currentLanguage) : t("bookingFlow.notScheduled", { fallback: "Not Scheduled Yet" })}
             </span>
           </div>
-        )}
 
-        <br />
+          {nextInvoicingDate && (
+            <div className={styles.infoRow}>
+              <CalendarOutlined className={styles.icon} />
+              <span>
+                {t("bookingFlow.nextPaymentDeduction", { fallback: "Next payment will deduct on:" })} {formatLongDate(nextInvoicingDate, currentLanguage)}
+              </span>
+            </div>
+          )}
 
-        {(status === 'ACTIVE' || status === 'EXPIRED') && (
+          <br />
+
           <div className={styles.actionsContainer}>
             {status === 'EXPIRED' && (
               <Button
@@ -128,29 +125,40 @@ const SubscriptionCard = ({ subscription, onRefresh }) => {
               </Button>
             )}
             <Button
-              type="primary"
-              icon={<CreditCardOutlined />}
-              onClick={handleUpdateClick}
-              className={styles.updateCardButton}
+              className={styles.extraServicesButton}
+              icon={<AppstoreAddOutlined />}
+              onClick={() => setIsExtraServicesModalVisible(true)}
             >
-              {t("bookingFlow.changeYourCard", { fallback: "Change your card" })}
+              {t("bookingFlow.extraServices", { fallback: "Extra Services" })}
+            </Button>
+            <Button
+              className={styles.updateCardButton}
+              icon={<CreditCardOutlined />}
+              onClick={() => setIsUpdateModalVisible(true)}
+            >
+              {t("buttons.updateCard", { fallback: "Update Card" })}
             </Button>
           </div>
-        )}
-      </div>
+        </div>
+      </Card>
 
-      {isUpdateModalVisible && (
-        <StripeCardUpdateModal
-          visible={isUpdateModalVisible}
-          onClose={() => setIsUpdateModalVisible(false)}
-          subscriptionId={id}
-          onSuccess={() => {
-            setIsUpdateModalVisible(false);
-            if (onRefresh) onRefresh();
-          }}
-        />
-      )}
-    </Card>
+      <SubscriptionExtraServicesModal
+        visible={isExtraServicesModalVisible}
+        onClose={() => setIsExtraServicesModalVisible(false)}
+        subscription={subscription}
+        onRefresh={onRefresh}
+      />
+
+      <StripeCardUpdateModal
+        visible={isUpdateModalVisible}
+        onClose={() => setIsUpdateModalVisible(false)}
+        subscriptionId={id}
+        onSuccess={() => {
+          setIsUpdateModalVisible(false);
+          if (onRefresh) onRefresh();
+        }}
+      />
+    </>
   );
 };
 

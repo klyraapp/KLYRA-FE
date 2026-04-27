@@ -98,7 +98,7 @@ const PaymentResultStatus = ({
         <WarningFilled className={styles.iconWarning} />
         <h2 className={styles.title}>{t("bookingFlow.paymentCancelled", { fallback: "Payment Cancelled" })}</h2>
         <p className={styles.subtitle}>
-          {t("bookingFlow.cancelledPaymentMessage", { fallback: "You cancelled the Vipps payment. Your booking has not been confirmed." })}
+          {t("bookingFlow.cancelledPaymentMessageGeneric", { fallback: "You cancelled the payment. Your booking has not been confirmed." })}
         </p>
         <div className={styles.actions}>
           <Button type="primary" className={styles.primaryButton} onClick={onRetry}>
@@ -147,8 +147,8 @@ const PaymentResultStatus = ({
         {pollError === 'UNAUTHORIZED'
           ? t("bookingFlow.sessionExpiredMessage", { fallback: "Your session has expired during the payment process. Please log in to view your booking status." })
           : pollError === 'PENDING_ON_RETURN'
-            ? t("bookingFlow.pendingOnReturnMessage", { fallback: "Your payment is still pending. If you completed the payment in Vipps, please wait a few moments and check your bookings." })
-            : t("bookingFlow.verificationTimedOutMessage", { fallback: "We could not verify your payment status. If you completed the payment in Vipps, please check your bookings — it may still be processing." })}
+            ? t("bookingFlow.pendingOnReturnMessageGeneric", { fallback: "Your payment is still pending. If you completed the payment, please wait a few moments and check your bookings." })
+            : t("bookingFlow.verificationTimedOutMessageGeneric", { fallback: "We could not verify your payment status. If you completed the payment, please check your bookings — it may still be processing." })}
       </p>
       <div className={styles.actions}>
         {pollError === 'UNAUTHORIZED' ? (

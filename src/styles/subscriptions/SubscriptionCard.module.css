@@ -1,9 +1,10 @@
+/* SubscriptionCard Styles */
+
 .card {
   width: 100%;
   min-height: 220px;
   border-radius: 16px;
   overflow: visible;
-  /* Clips children like the green header perfectly */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   border: 1px solid #f0f0f0;
   display: flex;
@@ -51,6 +52,8 @@
   margin: -16px -16px 16px -16px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 
 .headerTitle {
@@ -75,6 +78,9 @@
 
 .content {
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .serviceRow {
@@ -82,6 +88,8 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 
 .serviceName {
@@ -94,63 +102,58 @@
   color: #595959;
   font-size: 14px;
   margin-bottom: 12px;
+  word-break: break-word;
 }
 
 .infoRow {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   color: #595959;
   font-size: 14px;
   margin-bottom: 8px;
+  line-height: 1.4;
 }
 
 .icon {
   color: #8c8c8c;
   font-size: 14px;
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
-@media (max-width: 576px) {
-
-  .headerTitle,
-  .headerPrice {
-    font-size: 14px;
-  }
-
-  .serviceName {
-    font-size: 13px;
-  }
-
-  .infoRow {
-    gap: 8px;
-    font-size: 13px;
-  }
-
-  .actionsContainer {
-    flex-direction: column !important;
-  }
-
-  .actionsContainer button {
-    width: 100% !important;
-  }
-}
-
+/* Actions container */
 .actionsContainer {
   margin-top: auto;
   border-top: 1px solid #f0f0f0;
   padding-top: 16px;
-  display: flex !important;
+  display: flex;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
-.retryButton, .updateCardButton {
-  flex: 1;
-  height: 40px;
+/* Shared button base */
+.retryButton,
+.extraServicesButton,
+.updateCardButton {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 44px;
   border-radius: 8px;
   font-weight: 600;
-  transition: all 0.2s ease;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 12px;
 }
 
+/* Retry button */
 .retryButton {
   border-color: #297160 !important;
   color: #297160 !important;
@@ -163,22 +166,104 @@
   color: #215a4c !important;
 }
 
-.updateCardButton {
+/* Extra services button — primary green */
+.extraServicesButton {
   background-color: #297160 !important;
-  border-color: #297160 !important;
+  border: 1px solid #297160 !important;
+  color: #ffffff !important;
+}
+
+.extraServicesButton:hover {
+  background-color: #215a4c !important;
+  border-color: #215a4c !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(41, 113, 96, 0.25);
+}
+
+/* Update card button — outlined */
+.updateCardButton {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #1e293b !important;
 }
 
 .updateCardButton:hover {
-  background-color: #215a4c !important;
-  border-color: #215a4c !important;
+  background-color: #f8fafc !important;
+  border-color: #297160 !important;
+  color: #297160 !important;
 }
 
+/* Tablet */
+@media (max-width: 992px) {
+  .header {
+    padding: 10px 14px;
+  }
+
+  .headerTitle,
+  .headerPrice {
+    font-size: 14px;
+  }
+}
+
+/* Mobile */
 @media (max-width: 768px) {
   .actionsContainer {
-    flex-direction: column !important;
+    flex-direction: column;
+    gap: 8px;
   }
-  
-  .retryButton, .updateCardButton {
-    width: 100% !important;
+
+  .retryButton,
+  .extraServicesButton,
+  .updateCardButton {
+    width: 100%;
+    flex: none;
+    height: 42px;
+    font-size: 13px;
+    padding: 0 16px;
+  }
+
+  .infoRow {
+    gap: 8px;
+    font-size: 13px;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .header {
+    padding: 10px 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .headerTitle {
+    font-size: 13px;
+  }
+
+  .headerPrice {
+    font-size: 12px;
+    opacity: 0.9;
+  }
+
+  .serviceName {
+    font-size: 13px;
+  }
+
+  .customerName {
+    font-size: 13px;
+  }
+
+  .infoRow {
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .retryButton,
+  .extraServicesButton,
+  .updateCardButton {
+    height: 40px;
+    font-size: 12px;
+    border-radius: 6px;
   }
 }
