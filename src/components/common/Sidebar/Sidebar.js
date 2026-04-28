@@ -112,6 +112,10 @@ const Sidebar = ({ collapsed, onCollapse, onItemClick }) => {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
+    // Mark as an explicit user-initiated logout so AuthGuard does not
+    // auto-login the user as a guest on their next visit to "/".
+    sessionStorage.setItem("manual_logout", "true");
+    sessionStorage.removeItem("guest_welcomed");
     dispatch(logout());
     deleteCookie("access_token");
     deleteCookie("refresh_token");
