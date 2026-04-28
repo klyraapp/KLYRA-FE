@@ -9,6 +9,8 @@
 import Sidebar from "@/components/common/Sidebar/Sidebar";
 import { resetBooking } from "@/redux/reducers/bookingSlice";
 import { Drawer, Layout } from "antd";
+import Image from "next/image";
+import Logo from "@/components/common/Logo/Logo";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -128,11 +130,7 @@ const AppLayout = ({ children }) => {
               <FiMenu className={styles.hamburgerIcon} />
             </button>
             <div className={styles.mobileHeaderLogo}>
-              <img
-                src="/images/klayra_logo.svg"
-                alt="KLYRA Logo"
-                className={styles.mobileHeaderLogoImage}
-              />
+              <Logo className={styles.mobileHeaderLogoImage} />
             </div>
             <div style={{ width: 40 }} /> {/* Spacer for centering logo */}
           </div>
@@ -147,11 +145,7 @@ const AppLayout = ({ children }) => {
           >
             <div className={styles.drawerHeader}>
               <div className={styles.mobileHeaderLogo}>
-                <img
-                  src="/images/klayra_logo.svg"
-                  alt="KLYRA Logo"
-                  className={styles.mobileHeaderLogoImage}
-                />
+                <Logo className={styles.mobileHeaderLogoImage} />
               </div>
               <button
                 type="button"

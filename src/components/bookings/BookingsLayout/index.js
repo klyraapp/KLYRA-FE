@@ -2,6 +2,7 @@ import HeaderBar from '@/components/BookService/HeaderBar';
 import Sidebar from '@/components/common/Sidebar/Sidebar';
 import { useTranslation } from "@/hooks/useTranslation";
 import styles from '@/styles/bookings/BookingsLayout.module.css';
+import Logo from "@/components/common/Logo/Logo";
 import { Drawer, Layout } from 'antd';
 import { useEffect, useState } from 'react';
 import { FiMenu, FiX } from "react-icons/fi";
@@ -63,11 +64,7 @@ const BookingsLayout = ({ children, customSubtitle, customSubtitleKey, customSub
               <FiMenu className={layoutStyles.hamburgerIcon} />
             </button>
             <div className={layoutStyles.mobileHeaderLogo}>
-              <img
-                src="/images/klayra_logo.svg"
-                alt="KLYRA Logo"
-                className={layoutStyles.mobileHeaderLogoImage}
-              />
+              <Logo className={layoutStyles.mobileHeaderLogoImage} />
             </div>
             <div style={{ width: 40 }} />
           </div>
@@ -82,11 +79,7 @@ const BookingsLayout = ({ children, customSubtitle, customSubtitleKey, customSub
           >
             <div className={layoutStyles.drawerHeader}>
               <div className={layoutStyles.mobileHeaderLogo}>
-                <img
-                  src="/images/klayra_logo.svg"
-                  alt="KLYRA Logo"
-                  className={layoutStyles.mobileHeaderLogoImage}
-                />
+                <Logo className={layoutStyles.mobileHeaderLogoImage} />
               </div>
               <button
                 type="button"

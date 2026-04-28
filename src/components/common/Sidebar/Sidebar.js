@@ -6,6 +6,9 @@
 import { useTranslation } from "@/hooks/useTranslation";
 import { logout } from "@/redux/reducers/authSlice";
 import { deleteCookie } from "@/utils/utils";
+import Link from "next/link";
+import Image from "next/image";
+import Logo from "@/components/common/Logo/Logo";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
@@ -126,11 +129,7 @@ const Sidebar = ({ collapsed, onCollapse, onItemClick }) => {
         <div
           className={`${styles.logo} ${collapsed ? styles.logoCollapsed : ""}`}
         >
-          <img
-            src="/images/klayra_logo.svg"
-            alt="KLYRA Logo"
-            className={styles.logoImage}
-          />
+          <Logo className={styles.logoImage} />
         </div>
         <button
           type="button"
