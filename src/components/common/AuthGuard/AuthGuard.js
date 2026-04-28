@@ -53,91 +53,34 @@ const AuthGuard = ({ children }) => {
     });
   }, [t]);
 
-  
-  const applyUserData = useCallback(
-    (userData) => {
-      if (!userData) return false;
-
-      sessionStorage.removeItem("manual_logout");
-      dispatch(login(userData));
-
-      const isGuest = userData.roles?.[0]?.name === "Guest" || !userData.email;
-      const fullName =
-        `${userData.firstName || ""} ${userData.lastName || ""}`.trim();
-
-      dispatch(
-        setProfileData({
-          profileName: fullName || "Guest User",
-          email: userData.email || "Guest Account",
-          role: userData.roles?.[0]?.name || "Guest",
-          permissions: userData.permissions || [],
-          id: userData.id,
-          userLanguage: userData.languagePreference || "en",
-        }),
-      );
-
-      if (isGuest && !sessionStorage.getItem("guest_welcomed")) {
-        showGuestNotification();
-        sessionStorage.setItem("guest_welcomed", "true");
-      } else if (!isGuest) {
-        sessionStorage.removeItem("guest_welcomed");
-      }
-
-      return true;
-    },
-    [dispatch, showGuestNotification],
-  );
-
-  
-  const tryGuestLogin = useCallback(async () => {
-    try {
-      const response = await guestLogin();
-      if (!response?.data?.access_token) return false;
-
-      saveAuthTokens(
-        {
-          access_token: response.data.access_token,
-          refresh_token: response.data.refresh_token,
-        },
-        false,
-      );
-
-      // Validate the newly issued guest token
-      try {
-        const meResponse = await meAuth();
-        if (meResponse?.data) {
-          return applyUserData(meResponse.data);
-        }
-      } catch {
-        // Guest token was rejected immediately — clean up
-        deleteCookie("access_token");
-        deleteCookie("refresh_token");
-      }
-    } catch (error) {
-      console.error("Guest login failed:", error);
-    }
-    return false;
-  }, [applyUserData]);
-
   const validateAuth = useCallback(async () => {
+    // Ensure we only run on the client
     if (typeof window === "undefined") {
       setIsLoading(false);
       return;
     }
 
-    const isOnRoot = router.pathname === "/";
-    const isManualLogout = Boolean(sessionStorage.getItem("manual_logout"));
     let currentToken = getAccessTokenCookie("access_token");
 
-     
-    if (!currentToken && isOnRoot && !isManualLogout) {
-      const guestSuccess = await tryGuestLogin();
-      setIsAuthorized(guestSuccess);
-      setIsLoading(false);
-      return;
+    // Auto-call guest login for the base URL, unless user manually logged out in this session
+    if (!currentToken && router.pathname === "/") {
+      const isManualLogout = sessionStorage.getItem("manual_logout");
+      if (!isManualLogout) {
+        try {
+          const response = await guestLogin();
+          if (response?.data?.access_token) {
+            saveAuthTokens({
+              access_token: response.data.access_token,
+              refresh_token: response.data.refresh_token,
+            }, false);
+            currentToken = response.data.access_token;
+          }
+        } catch (error) {
+          console.error("Guest login failed:", error);
+        }
+      }
     }
 
-    
     if (!currentToken) {
       dispatch(logout());
       setIsAuthorized(false);
@@ -150,34 +93,54 @@ const AuthGuard = ({ children }) => {
       const userData = response?.data;
 
       if (userData) {
-        applyUserData(userData);
+        // Clear manual logout flag upon successful authentication
+        sessionStorage.removeItem("manual_logout");
+        dispatch(login(userData));
+
+        const isGuest = userData.roles?.[0]?.name === "Guest" || !userData.email;
+        const fullName = `${userData.firstName || ""} ${userData.lastName || ""}`.trim();
+
+        dispatch(
+          setProfileData({
+            profileName: fullName || "Guest User",
+            email: userData.email || "Guest Account",
+            role: userData.roles?.[0]?.name || "Guest",
+            permissions: userData.permissions || [],
+            id: userData.id,
+            userLanguage: userData.languagePreference || "en",
+          }),
+        );
+
+        // If they just logged in as guest (auto or manual), show the notification
+        if (isGuest && !sessionStorage.getItem('guest_welcomed')) {
+          showGuestNotification();
+          sessionStorage.setItem('guest_welcomed', 'true');
+        } else if (!isGuest) {
+          // If they aren't a guest, make sure to reset the welcomed flag for next time
+          sessionStorage.removeItem('guest_welcomed');
+        }
+
         setIsAuthorized(true);
       } else {
         dispatch(logout());
         setIsAuthorized(false);
       }
     } catch {
-      
       dispatch(logout());
       deleteCookie("access_token");
       deleteCookie("refresh_token");
-
-      
-      if (isOnRoot && !isManualLogout) {
-        const guestSuccess = await tryGuestLogin();
-        setIsAuthorized(guestSuccess);
-        setIsLoading(false);
-        return;
-      }
-
       setIsAuthorized(false);
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, router.pathname, applyUserData, tryGuestLogin]);
+  }, [dispatch, router.pathname, showGuestNotification]);
 
   useEffect(() => {
     if (isPublicRoute) {
+      if (router.pathname === "/login") {
+        sessionStorage.setItem("manual_logout", "true");
+        sessionStorage.removeItem('guest_welcomed'); // Reset welcome flag when explicitly logging out
+      }
       setIsLoading(false);
       setIsAuthorized(true);
       return;
@@ -188,13 +151,14 @@ const AuthGuard = ({ children }) => {
     }
   }, [isPublicRoute, validateAuth, router.pathname, isLangLoading]);
 
-  useEffect(() => {
-    if (isLoading) return;
 
-    const hasToken =
-      typeof window !== "undefined"
-        ? Boolean(getAccessTokenCookie("access_token"))
-        : false;
+
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+
+    const hasToken = typeof window !== "undefined" ? Boolean(getAccessTokenCookie("access_token")) : false;
 
     if (!isAuthorized && !isPublicRoute && !hasToken) {
       router.replace("/login");
@@ -242,3 +206,4 @@ const AuthGuard = ({ children }) => {
 };
 
 export default AuthGuard;
+
