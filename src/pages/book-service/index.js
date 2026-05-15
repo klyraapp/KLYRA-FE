@@ -6,7 +6,6 @@
 import HeaderBar from "@/components/BookService/HeaderBar";
 import ServiceGrid from "@/components/BookService/ServiceGrid";
 import { useActiveServices } from "@/hooks/useServices";
-import { useServiceLocations } from "@/hooks/useServiceLocations";
 import { useTranslation } from "@/hooks/useTranslation";
 import { setSelectedService } from "@/redux/reducers/bookingSlice";
 import styles from "@/styles/BookService.module.css";
@@ -21,9 +20,6 @@ const BookService = () => {
   const { t } = useTranslation();
   const selectedService = useSelector((state) => state.booking.selectedService);
   const { data: services, isLoading, error, isError } = useActiveServices();
-  
-  // Pre-fetch locations to avoid loading state in the next step
-  useServiceLocations();
 
   useEffect(() => {
     const { service } = router.query;

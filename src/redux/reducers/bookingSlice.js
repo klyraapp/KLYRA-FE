@@ -16,7 +16,6 @@ const initialState = {
   areaSqm: 25,
   isRecurring: false,
   recurringInterval: null,
-  serviceLocationId: null,
 
   // Step 2 Extra: Additional info
   hasFreeParking: false,
@@ -89,9 +88,6 @@ const bookingSlice = createSlice({
     setRecurringInterval: (state, action) => {
       state.recurringInterval = action.payload;
       state.isRecurring = action.payload !== null;
-    },
-    setServiceLocationId: (state, action) => {
-      state.serviceLocationId = action.payload;
     },
     setHasFreeParking: (state, action) => {
       state.hasFreeParking = action.payload;
@@ -188,7 +184,6 @@ export const {
   setAreaSqm,
   setIsRecurring,
   setRecurringInterval,
-  setServiceLocationId,
   setHasFreeParking,
   setHasPets,
   setAccessMethod,

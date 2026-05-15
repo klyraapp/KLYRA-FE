@@ -4,7 +4,6 @@
 
 import { useTranslation } from "@/hooks/useTranslation";
 import { formatLongDate } from "@/helpers/dateFormatter";
-import { useServiceLocations } from "@/hooks/useServiceLocations";
 import styles from '@/styles/bookings/BookingDetailSection.module.css';
 
 const BookingDetailSection = ({ booking }) => {
@@ -20,9 +19,6 @@ const BookingDetailSection = ({ booking }) => {
     serviceCity,
     serviceCountry
   } = booking;
-
-  const { data: locations } = useServiceLocations();
-  const locationName = locations?.find(l => l.id === booking?.serviceLocationId)?.name;
 
   const address = [serviceStreetAddress, [serviceCity, serviceCountry].filter(Boolean).join(' ')].filter(Boolean).join(', ');
 
@@ -50,12 +46,7 @@ const BookingDetailSection = ({ booking }) => {
       </div>
 
       <div className={styles.detailRow}>
-        <span className={styles.label}>{t("bookingFlow.serviceLocation", { fallback: "Service Location" })}</span>
-        <span className={styles.value}>{locationName || "-"}</span>
-      </div>
-
-      <div className={styles.detailRow}>
-        <span className={styles.label}>{t("bookingFlow.location", { fallback: "Address" })}</span>
+        <span className={styles.label}>{t("bookingFlow.location", { fallback: "Location" })}</span>
         <span className={styles.value}>{address || "-"}</span>
       </div>
 

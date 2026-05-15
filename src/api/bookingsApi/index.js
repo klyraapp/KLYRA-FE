@@ -16,11 +16,11 @@ export const getBookingById = (id) => {
 };
 
 export const createBooking = (data) => {
-  return api.post(`/v2${BOOKINGS_ENDPOINT}`, { ...data, webFlow: true });
+  return api.post(BOOKINGS_ENDPOINT, { ...data, webFlow: true });
 };
 
 export const calculateBookingPrice = (data) => {
-  return api.post(`/v2${BOOKINGS_ENDPOINT}/calculate`, data);
+  return api.post(`${BOOKINGS_ENDPOINT}/calculate`, data);
 };
 
 export const updateBooking = (id, data) => {
@@ -39,6 +39,6 @@ export const deleteBooking = (id) => {
  * Fetches disabled dates and weekend-off flags for the booking calendar.
  * @returns {Promise<{ disabledDates: string[], sundayOff: boolean, saturdayOff: boolean }>}
  */
-export const getCalendarDisabledDates = (params) => {
-  return api.get(`/v2${BOOKINGS_ENDPOINT}/calendar/disabled-dates`, { params });
+export const getCalendarDisabledDates = (serviceId) => {
+  return api.get(`${BOOKINGS_ENDPOINT}/calendar/disabled-dates/${serviceId}`);
 };

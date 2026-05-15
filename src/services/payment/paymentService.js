@@ -13,7 +13,7 @@ const BOOKINGS_ENDPOINT = "/bookings";
  */
 export const createBookingWithPayment = async (bookingData, isGuest = false) => {
   try {
-    const endpoint = isGuest ? `${BOOKINGS_ENDPOINT}/guest` : `/v2${BOOKINGS_ENDPOINT}`;
+    const endpoint = isGuest ? `${BOOKINGS_ENDPOINT}/guest` : BOOKINGS_ENDPOINT;
     const response = await api.post(
       endpoint,
       { ...bookingData, webFlow: true }
@@ -34,7 +34,7 @@ export const createBookingWithPayment = async (bookingData, isGuest = false) => 
  * @throws {Error} If the API call fails or redirectUrl is absent
  */
 export const createVippsBooking = async (bookingData, isGuest = false) => {
-  const endpoint = isGuest ? `${BOOKINGS_ENDPOINT}/guest` : `/v2${BOOKINGS_ENDPOINT}`;
+  const endpoint = isGuest ? `${BOOKINGS_ENDPOINT}/guest` : BOOKINGS_ENDPOINT;
   const response = await api.post(
     endpoint,
     { ...bookingData, webFlow: true }

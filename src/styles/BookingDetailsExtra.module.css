@@ -203,35 +203,3 @@
 .customSwitch :global(.ant-switch-checked) {
   background-color: #297160 !important;
 }
-
-.loaderWrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.4);
-  z-index: 50;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  pointer-events: all;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-}
-
-.loaderText {
-  font-size: 16px;
-  font-weight: 600;
-  color: #297160;
-  letter-spacing: 0.5px;
-}
-
-.contentBlurred {
-  filter: blur(4px);
-  pointer-events: none;
-  user-select: none;
-  transition: filter 0.3s ease;
-}

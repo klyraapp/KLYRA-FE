@@ -31,10 +31,7 @@ const AuthGuard = ({ children }) => {
   const { t, isLoading: isLangLoading } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
-
-  /** True only while a guest session is active (never true for unauthenticated visitors) */
-  const isGuestUser = isAuthenticated && (user?.roles?.[0]?.name === "Guest" || !user?.email);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const isPublicRoute = PUBLIC_ROUTES.some((route) =>
     router.pathname.startsWith(route),
@@ -169,11 +166,7 @@ const AuthGuard = ({ children }) => {
     }
 
     if (isAuthenticated && isPublicRoute && hasToken) {
-      // Guests are allowed to visit /signup while keeping their session alive
-      const isGuestAccessingSignup = isGuestUser && router.pathname === "/signup";
-      if (!isGuestAccessingSignup) {
-        router.replace("/");
-      }
+      router.replace("/");
     }
   }, [isLoading, isAuthorized, isAuthenticated, isPublicRoute, router]);
 

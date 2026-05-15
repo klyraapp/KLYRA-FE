@@ -11,8 +11,8 @@ export const getOffers = (params = {}) => {
   return api.get(`${OFFERS_ENDPOINT}/admin`, { params });
 };
 
-export const getActiveOffers = (params = {}) => {
-  return api.get(`/v2${OFFERS_ENDPOINT}`, { params });
+export const getActiveOffers = () => {
+  return api.get(OFFERS_ENDPOINT);
 };
 
 export const getOfferById = (id) => {

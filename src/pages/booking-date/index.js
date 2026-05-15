@@ -14,7 +14,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { setBookingDate } from "@/redux/reducers/bookingSlice";
 import styles from "@/styles/BookingDate.module.css";
 import { getServiceIcon } from "@/utils/utils";
-import { Alert, Calendar, Input, Skeleton } from "antd";
+import { Alert, Calendar, Input } from "antd";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -29,7 +29,6 @@ const BookingDate = () => {
 
   const { currentPrice, selectedService } = useServicePricing();
   const bookingDate = useSelector((state) => state.booking.bookingDate);
-  const serviceLocationId = useSelector((state) => state.booking.serviceLocationId);
 
   const { t, currentLanguage } = useTranslation();
 
@@ -59,10 +58,7 @@ const BookingDate = () => {
 
     const fetchDisabledDates = async () => {
       try {
-        const response = await getCalendarDisabledDates({ 
-          serviceId: selectedService.id,
-          serviceLocationId: serviceLocationId 
-        });
+        const response = await getCalendarDisabledDates(selectedService.id);
         const data = response?.data;
         if (data) {
           setApiDisabledDates(data.disabledDates || []);
@@ -246,28 +242,17 @@ const BookingDate = () => {
             className={styles.alert}
           />
 
-          {calendarLoading ? (
-            <div className={styles.calendarSkeleton}>
-              <div className={styles.skeletonHeader} />
-              <div className={styles.skeletonGrid}>
-                {[...Array(35)].map((_, i) => (
-                  <div key={i} className={styles.skeletonCell} />
-                ))}
-              </div>
-            </div>
-          ) : (
-            <div className={styles.calendarContainer}>
-              <Calendar
-                fullscreen={false}
-                value={currentMonth}
-                onSelect={handleDateSelect}
-                disabledDate={disabledDate}
-                fullCellRender={dateFullCellRender}
-                headerRender={customHeaderRender}
-                className={styles.calendar}
-              />
-            </div>
-          )}
+          <div className={styles.calendarContainer}>
+            <Calendar
+              fullscreen={false}
+              value={currentMonth}
+              onSelect={handleDateSelect}
+              disabledDate={disabledDate}
+              fullCellRender={dateFullCellRender}
+              headerRender={customHeaderRender}
+              className={styles.calendar}
+            />
+          </div>
 
           {selectedDate && (
             <SelectedInfoCard

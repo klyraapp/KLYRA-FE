@@ -8,8 +8,7 @@ import {
   setAccommodationType,
   setAreaSqm,
   setNumberOfBathrooms,
-  setRecurringInterval,
-  setServiceLocationId
+  setRecurringInterval
 } from "@/redux/reducers/bookingSlice";
 import styles from "@/styles/BookingDetailsPage.module.css";
 import { getServiceIcon } from "@/utils/utils";
@@ -24,12 +23,9 @@ import {
   FiHome,
   FiRepeat,
   FiTrendingUp,
-  FiUsers,
-  FiMapPin
+  FiUsers
 } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { useServiceLocations } from "@/hooks/useServiceLocations";
-import { Select } from "antd";
 
 const ACCOMMODATION_OPTIONS = [
   { key: "house", labelKey: "bookingFlow.house", defaultLabel: "House", icon: FiHome, value: "HOUSE" },
@@ -101,11 +97,6 @@ const BookingDetails = () => {
   const numberOfBathrooms = useSelector(
     (state) => state.booking.numberOfBathrooms,
   );
-  const serviceLocationId = useSelector(
-    (state) => state.booking.serviceLocationId,
-  );
-
-  const { data: locations, isLoading: locationsLoading } = useServiceLocations();
 
   useEffect(() => {
     if (router.isReady && !selectedService) {
@@ -145,10 +136,6 @@ const BookingDetails = () => {
     dispatch(setAreaSqm(value));
   };
 
-  const handleLocationChange = (value) => {
-    dispatch(setServiceLocationId(value));
-  };
-
   const handleBack = () => {
     router.push("/book-service");
   };
@@ -176,9 +163,6 @@ const BookingDetails = () => {
   const showRecurringInterval = !!selectedService?.allowRecurringBookings && hasRecurringPriceRule;
 
   const getNextButtonTooltip = () => {
-    if (!serviceLocationId) {
-      return t('bookingFlow.locationMissing', { fallback: "Please select a service location to proceed" });
-    }
     if (!accommodationType && isIntervalRequired && !recurringInterval) {
       return t('bookingFlow.accommodationAndIntervalMissing', { fallback: "Accommodation type and cleaning interval are not selected and should be selected to proceed" });
     }
@@ -191,7 +175,7 @@ const BookingDetails = () => {
     return "";
   };
 
-  const isNextDisabled = !serviceLocationId || !accommodationType || (isIntervalRequired && !recurringInterval);
+  const isNextDisabled = !accommodationType || (isIntervalRequired && !recurringInterval);
 
   return (
     <div className={styles.pageWrapper}>
@@ -221,33 +205,15 @@ const BookingDetails = () => {
             </div>
           </div>
 
-          <div className={styles.inputRow}>
-            <div className={styles.inputColumn}>
-              <label className={styles.sectionLabel}>{t('bookingFlow.numberOfBathrooms', { fallback: 'Number of Bathrooms' })}</label>
-              <InputNumber
-                min={1}
-                max={10}
-                value={numberOfBathrooms}
-                onChange={handleBathroomsChange}
-                className={styles.bathroomInput}
-              />
-            </div>
-
-            <div className={styles.inputColumn}>
-              <label className={styles.sectionLabel}>{t('bookingFlow.serviceLocation', { fallback: 'Service Location' })}</label>
-              <Select
-                className={styles.locationSelect}
-                placeholder={t('bookingFlow.selectLocation', { fallback: 'Select your city' })}
-                loading={locationsLoading}
-                value={serviceLocationId}
-                onChange={handleLocationChange}
-                suffixIcon={<FiMapPin />}
-                options={locations?.map(loc => ({
-                  label: loc.name,
-                  value: loc.id
-                }))}
-              />
-            </div>
+          <div className={styles.section}>
+            <label className={styles.sectionLabel}>{t('bookingFlow.numberOfBathrooms', { fallback: 'Number of Bathrooms' })}</label>
+            <InputNumber
+              min={1}
+              max={10}
+              value={numberOfBathrooms}
+              onChange={handleBathroomsChange}
+              className={styles.bathroomInput}
+            />
           </div>
 
           <div className={styles.section}>

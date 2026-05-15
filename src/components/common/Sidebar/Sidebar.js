@@ -21,7 +21,7 @@ import {
   FiRepeat,
   FiUserPlus
 } from "react-icons/fi";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import styles from "../../../../styles/sidebar.module.css";
 import SidebarItem from "../../Sidebar/SidebarItem";
 
@@ -29,10 +29,6 @@ const Sidebar = ({ collapsed, onCollapse, onItemClick }) => {
   const router = useRouter();
   const currentPath = router.pathname;
   const { t } = useTranslation();
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
-
-  /** True only while an active guest session exists */
-  const isGuestUser = isAuthenticated && (user?.roles?.[0]?.name === "Guest" || !user?.email);
 
   const isBookingFlow = useMemo(() => {
     const bookingPaths = [
@@ -111,7 +107,7 @@ const Sidebar = ({ collapsed, onCollapse, onItemClick }) => {
         />
       );
     });
-  }, [MENU_ITEMS, currentPath, collapsed, isBookingFlow, onItemClick]);
+  }, [MENU_ITEMS, currentPath, collapsed, isBookingFlow]);
 
   const dispatch = useDispatch();
 
@@ -149,24 +145,9 @@ const Sidebar = ({ collapsed, onCollapse, onItemClick }) => {
 
       {!collapsed && (
         <div className={styles.footer}>
-          {isGuestUser ? (
-            // Guest users get a Sign In / Sign Up button; session is kept alive on navigation
-            <button
-              type="button"
-              className={styles.logoutButton}
-              onClick={() => {
-                // Flag lets the signup page restore its guest UI after a hard refresh
-                sessionStorage.setItem("guest_navigated_to_signup", "true");
-                router.push("/signup");
-              }}
-            >
-              {t("auth.signInSignUp", { fallback: "Sign In / Sign Up" })}
-            </button>
-          ) : (
-            <button type="button" className={styles.logoutButton} onClick={handleLogout}>
-              {t("auth.logout", { fallback: "Log Out" })}
-            </button>
-          )}
+          <button className={styles.logoutButton} onClick={handleLogout}>
+            {t("auth.logout", { fallback: "Log Out" })}
+          </button>
         </div>
       )}
     </aside>

@@ -19,19 +19,21 @@ import {
 } from "@/redux/reducers/bookingSlice";
 import styles from "@/styles/BookingDetailsExtra.module.css";
 import { getServiceIcon } from "@/utils/utils";
-import { Input, Radio, Spin } from "antd";
+import { Input, Radio } from "antd";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const { TextArea } = Input;
+
+
+
+// Constants removed to use dynamic settings from Redux
 
 const BookingDetailsExtra = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-
-  const [isLoading, setIsLoading] = useState(true);
 
   const { currentPrice, selectedService } = useServicePricing();
   const hasFreeParking = useSelector((state) => state.booking.hasFreeParking);
@@ -45,8 +47,6 @@ const BookingDetailsExtra = () => {
   const parkingSurcharge = priceSettings?.parkingSurcharge || 135;
   const petSurcharge = priceSettings?.petSurcharge || 208;
 
-  const serviceLocationId = useSelector((state) => state.booking.serviceLocationId);
-
   useEffect(() => {
     if (router.isReady && !selectedService) {
       router.push("/book-service");
@@ -55,24 +55,15 @@ const BookingDetailsExtra = () => {
 
   useEffect(() => {
     const fetchSettings = async () => {
-      if (!serviceLocationId) {
-        setIsLoading(false);
-        return;
-      }
-
-      setIsLoading(true);
       try {
-        const response = await getAppSettings(serviceLocationId);
+        const response = await getAppSettings();
         dispatch(setSettings(response.data));
       } catch (error) {
         console.error("Failed to fetch settings:", error);
-      } finally {
-        // Slight delay to ensure a smooth transition even if API is very fast
-        setTimeout(() => setIsLoading(false), 400);
       }
     };
     fetchSettings();
-  }, [dispatch, serviceLocationId]);
+  }, [dispatch]);
 
   const handleParkingChange = (e) => {
     dispatch(setHasFreeParking(e.target.value === "yes"));
@@ -114,15 +105,6 @@ const BookingDetailsExtra = () => {
     <div className={styles.pageWrapper}>
       <HeaderBar currentStep={2} />
       <div className={styles.pageContainer}>
-        {isLoading && (
-          <div className={styles.loaderWrapper}>
-            <Spin size="large" />
-            <span className={styles.loaderText}>
-              {t('common.loadingSettings', { fallback: 'Updating pricing for your location...' })}
-            </span>
-          </div>
-        )}
-
         <SelectedServiceCard
           serviceName={selectedService.name}
           price={currentPrice}
@@ -130,13 +112,12 @@ const BookingDetailsExtra = () => {
           fallbackIcon={ServiceIcon}
         />
 
-        <div className={isLoading ? styles.contentBlurred : ''}>
-          <div className={styles.formSection}>
-            <h2 className={styles.sectionTitle}>
-              {t('bookingFlow.importantInfo', { fallback: 'Important additional information regarding your order' })}
-            </h2>
+        <div className={styles.formSection}>
+          <h2 className={styles.sectionTitle}>
+            {t('bookingFlow.importantInfo', { fallback: 'Important additional information regarding your order' })}
+          </h2>
 
-            <div className={styles.questionSection}>
+          <div className={styles.questionSection}>
             <label className={styles.questionLabel}>
               {t('bookingFlow.freeParking', { fallback: 'Is there free parking nearby?' })}
             </label>
@@ -244,8 +225,7 @@ const BookingDetailsExtra = () => {
         />
       </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default BookingDetailsExtra;
