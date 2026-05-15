@@ -34,6 +34,7 @@ import {
 import { formatLongDate } from "@/helpers/dateFormatter";
 import { useServicePricing } from "@/hooks/useServicePricing";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useServiceLocations } from "@/hooks/useServiceLocations";
 import {
   setOfferId,
   setPaymentMethod,
@@ -133,10 +134,13 @@ const PaymentPage = () => {
   const serviceCountry = useSelector((state) => state.booking.serviceCountry);
   const promoCodeRedux = useSelector((state) => state.booking.promoCode);
   const offerIdRedux = useSelector((state) => state.booking.offerId);
+  const serviceLocationId = useSelector((state) => state.booking.serviceLocationId);
   const authUser = useSelector((state) => state.auth?.user);
   const isGuest = authUser?.userRolePermissions?.some(
     (urp) => urp.role?.name === "guest_user"
   );
+
+  const { data: locations } = useServiceLocations();
 
   // Local state
   const [calculation, setCalculation] = useState(null);
@@ -191,6 +195,7 @@ const PaymentPage = () => {
         isRecurring: !!isRecurring,
         recurringInterval: recurringInterval || null,
         bookingDate,
+        serviceLocationId,
       };
 
       try {
@@ -226,7 +231,7 @@ const PaymentPage = () => {
 
   const fetchOffers = async () => {
     try {
-      const response = await getActiveOffers();
+      const response = await getActiveOffers({ serviceLocationId });
 
       let offersData = [];
 
@@ -400,6 +405,7 @@ const PaymentPage = () => {
     servicePostalCode: servicePostalCode,
     promoCode: promoCodeRedux || "",
     offerId: offerIdRedux || 0,
+    serviceLocationId,
     paymentMethod,
     webFlow: true,
   });
@@ -598,6 +604,8 @@ const PaymentPage = () => {
   const displayPrice = calculation?.priceBreakdown?.basePrice || currentPrice;
   const customerName = (firstName || lastName) ? `${firstName || ""} ${lastName || ""}`.trim() : t('common.anonymous', { fallback: 'No Name' });
 
+  const locationName = locations?.find(l => l.id === serviceLocationId)?.name;
+
   return (
     <>
       {redirectingProvider && (
@@ -639,7 +647,11 @@ const PaymentPage = () => {
                 </span>
               </div>
               <div className={styles.infoRow}>
-                <span className={styles.infoLabel}>{t('bookingFlow.location', { fallback: 'Location' })}</span>
+                <span className={styles.infoLabel}>{t('bookingFlow.serviceLocation', { fallback: 'Service Location' })}</span>
+                <span className={styles.infoValue}>{locationName || "-"}</span>
+              </div>
+              <div className={styles.infoRow}>
+                <span className={styles.infoLabel}>{t('bookingFlow.location', { fallback: 'Address' })}</span>
                 <span className={styles.infoValue}>
                   {serviceStreetAddress || "5345 Nw 120 ave"},{" "}
                   {servicePostalCode || "333077"}

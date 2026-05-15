@@ -11,23 +11,25 @@ import {
   PASSWORD_REGEX,
   PASSWORD_VALIDATION_MESSAGE,
 } from "@/features/auth/constants";
-import { saveAuthTokens } from "@/features/auth/services/authStorage";
+import { clearAuthTokens, saveAuthTokens } from "@/features/auth/services/authStorage";
 import {
   buttonStyles,
   buttonTheme,
+  colors,
   formStyles,
   linkStyles,
   loginPageStyles,
 } from "@/features/auth/styles/login.styles";
 import { useTranslation } from "@/hooks/useTranslation";
-import { login as authSliceLogin } from "@/redux/reducers/authSlice";
-import { setCookie } from "@/utils/utils";
+import { login as authSliceLogin, logout } from "@/redux/reducers/authSlice";
+import { deleteCookie, setCookie } from "@/utils/utils";
 import { useMutation as reactQueryUseMutation } from "@tanstack/react-query";
-import { Button, Checkbox, Form, Input, message } from "antd";
+import { Alert, Button, Checkbox, Form, Input, message } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAccessTokenCookie } from "@/utils/axiosMiddleware";
 
 const CreateAcc = () => {
   const router = useRouter();
@@ -38,12 +40,67 @@ const CreateAcc = () => {
   const [registeredUser, setRegisteredUser] = useState({ email: "", phone: "" });
   const otpType = router.query.type || "signup_otp";
 
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+
+  /** True only while an active guest session exists */
+  const isGuestUser = isAuthenticated && (user?.roles?.[0]?.name === "Guest" || !user?.email);
+
+  /**
+   * True when the guest UI (back button + info banner) should be shown.
+   * Covers two scenarios:
+   *  1. Redux is populated (normal first-visit navigation).
+   *  2. Redux was wiped by a hard refresh — fall back to checking the
+   *     sessionStorage flag set by the sidebar + the still-present cookie.
+   */
+  const hasGuestFlag =
+    typeof window !== "undefined" &&
+    sessionStorage.getItem("guest_navigated_to_signup") === "true";
+  const hasTokenCookie =
+    typeof window !== "undefined" &&
+    Boolean(getAccessTokenCookie("access_token"));
+  const showGuestUI = isGuestUser || (hasGuestFlag && hasTokenCookie);
+
   useEffect(() => {
     if (router.query.step === "otp" && router.query.email) {
       setRegisteredUser({ email: router.query.email, phone: router.query.phone || "" });
       setStep("otp");
     }
   }, [router.query]);
+
+  /**
+   * Clears the guest session cookies, Redux state, and sessionStorage flags.
+   * Called in the background — does not interrupt the visible signup/OTP flow.
+   */
+  const clearGuestSession = useCallback(() => {
+    dispatch(logout());
+    clearAuthTokens();
+    deleteCookie("access_token");
+    deleteCookie("refresh_token");
+    sessionStorage.removeItem("guest_welcomed");
+    sessionStorage.removeItem("guest_navigated_to_signup");
+    sessionStorage.setItem("manual_logout", "true");
+  }, [dispatch]);
+
+  /** Navigates the guest back to the main page without touching the session */
+  const handleBackClick = useCallback(() => {
+    router.push("/");
+  }, [router]);
+
+  /**
+   * Intercepts the Login link click for guest users:
+   * clears the guest session first, then navigates to /login.
+   * For regular (non-guest) visitors the default Link behaviour is preserved.
+   */
+  const handleLoginLinkClick = useCallback(
+    (e) => {
+      if (isGuestUser) {
+        e.preventDefault();
+        clearGuestSession();
+        router.push("/login");
+      }
+    },
+    [isGuestUser, clearGuestSession, router],
+  );
 
   const { mutate: mutateSignup, isLoading: signupLoading } =
     reactQueryUseMutation({
@@ -71,6 +128,11 @@ const CreateAcc = () => {
 
     mutateSignup(userData, {
       onSuccess: (response) => {
+        // Clear the guest session in the background once the account is created.
+        // The OTP step and all subsequent UI remains exactly the same.
+        if (isGuestUser) {
+          clearGuestSession();
+        }
         message.success(response?.data?.message || t("auth.accountCreated", { fallback: "Account created! Verification code sent." }));
         setRegisteredUser({ email: formData.email, phone: formData.phone || "" });
         setStep("otp");
@@ -169,7 +231,42 @@ const CreateAcc = () => {
 
     return (
       <>
+        {/* Back button — only visible to guests so they can return to the main page */}
+        {showGuestUI && (
+          <button
+            type="button"
+            onClick={handleBackClick}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              color: colors.primary,
+              fontSize: "14px",
+              fontWeight: "500",
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+              padding: "0 0 16px 0",
+            }}
+          >
+            &#8592; {t("auth.backToHome", { fallback: "Back" })}
+          </button>
+        )}
+
         <LoginHeader title={t("auth.signUpToKlyra", { fallback: "Sign up to Klyra" })} />
+
+        {/* Info banner shown only to guest users about previous bookings */}
+        {showGuestUI && (
+          <Alert
+            type="info"
+            showIcon
+            style={{ marginBottom: "20px", borderRadius: "8px" }}
+            message={t("auth.previousBookingsInfo", {
+              fallback:
+                "If you have any previous bookings, please use that same email address to sign up and retrieve them.",
+            })}
+          />
+        )}
 
         <Form
           name="signup"
@@ -322,7 +419,11 @@ const CreateAcc = () => {
 
           <div style={linkStyles.registerContainer}>
             <span style={linkStyles.registerLink}>{t("auth.alreadyHaveAnAccount", { fallback: "Already have an account? " })}</span>
-            <Link href="/login" style={linkStyles.registerLinkBold}>
+            {/*
+              For guest users: intercept the click, clear the guest session first,
+              then navigate to /login. For regular visitors: behave as a normal link.
+            */}
+            <Link href="/login" style={linkStyles.registerLinkBold} onClick={handleLoginLinkClick}>
               {t("auth.login", { fallback: "Login" })}
             </Link>
           </div>

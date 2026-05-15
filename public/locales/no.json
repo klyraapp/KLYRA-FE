@@ -21,7 +21,8 @@
     "reset": "Tilbakestill",
     "all": "Alle",
     "of": "av",
-    "items": "elementer"
+    "items": "elementer",
+    "loadingSettings": "Oppdaterer priser for din lokasjon..."
   },
   "status": {
     "active": "Aktiv",
@@ -381,7 +382,10 @@
     "or": "eller",
     "dontHaveAccount": "Har du ikke en konto? ",
     "signInToKlyra": "Logg inn på Klyra",
-    "signUp": "Registrer deg"
+    "signUp": "Registrer deg",
+    "signInSignUp": "Logg inn / Registrer deg",
+    "backToHome": "Tilbake",
+    "previousBookingsInfo": "Hvis du har tidligere bestillinger, vennligst bruk samme e-postadresse for å registrere deg og hente dem."
   },
   "settings": {
     "title": "Innstillinger",
@@ -495,6 +499,9 @@
     "cityPlaceholder": "By (f.eks. Oslo)",
     "countryPlaceholder": "Land (f.eks. Norge)",
     "phonePlaceholder": "Telefonnummer",
+    "serviceLocation": "Tjenestested",
+    "selectLocation": "Velg din by",
+    "locationMissing": "Vennligst velg et tjenestested for å fortsette",
     "accommodationAndIntervalMissing": "Boligtype og vaskeintervall er ikke valgt og må velges for å gå videre",
     "accommodationTypeMissing": "Boligtype er ikke valgt og må velges for å gå videre",
     "cleaningIntervalMissing": "Vaskeintervall er ikke valgt og må velges for å gå videre",

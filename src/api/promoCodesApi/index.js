@@ -27,6 +27,6 @@ export const deletePromoCode = (id) => {
   return api.delete(`${PROMO_CODES_ENDPOINT}/${id}`);
 };
 
-export const validatePromoCode = (code) => {
-  return api.post(`${PROMO_CODES_ENDPOINT}/validate`, { code });
+export const validatePromoCode = (data) => {
+  return api.post(`/v2${PROMO_CODES_ENDPOINT}/validate`, data);
 };

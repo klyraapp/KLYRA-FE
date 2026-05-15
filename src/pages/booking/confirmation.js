@@ -20,8 +20,9 @@ import {
   FiChevronDown,
   FiHome
 } from "react-icons/fi";
-import { useSelector } from "react-redux";
 import { useGTMPurchaseTracking } from "@/hooks/useGTM";
+import { useServiceLocations } from "@/hooks/useServiceLocations";
+import { useSelector } from "react-redux";
 
 
 
@@ -37,6 +38,9 @@ const ConfirmationPage = () => {
     isRecurring: reduxIsRecurring,
     recurringInterval: reduxRecurringInterval,
   } = useServicePricing();
+
+  const { data: locations } = useServiceLocations();
+  const serviceLocationIdRedux = useSelector((state) => state.booking.serviceLocationId);
 
   const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -159,6 +163,9 @@ const ConfirmationPage = () => {
     }
     : null;
 
+  const locationId = booking?.serviceLocationId || serviceLocationIdRedux;
+  const locationName = locations?.find(l => l.id === locationId)?.name;
+
   return (
     <div className={styles.pageWrapper}>
       <HeaderBar currentStep={6} />
@@ -214,7 +221,13 @@ const ConfirmationPage = () => {
             </div>
             <div className={styles.infoRow}>
               <span className={styles.infoLabel}>
-                {t("bookingFlow.location", { fallback: "Location" })}
+                {t("bookingFlow.serviceLocation", { fallback: "Service Location" })}
+              </span>
+              <span className={styles.infoValue}>{locationName || "-"}</span>
+            </div>
+            <div className={styles.infoRow}>
+              <span className={styles.infoLabel}>
+                {t("bookingFlow.location", { fallback: "Address" })}
               </span>
               <span className={styles.infoValue}>{displayAddress}</span>
             </div>

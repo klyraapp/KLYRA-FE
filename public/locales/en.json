@@ -21,7 +21,8 @@
     "reset": "Reset",
     "all": "All",
     "of": "of",
-    "items": "items"
+    "items": "items",
+    "loadingSettings": "Updating pricing for your location..."
   },
   "status": {
     "active": "Active",
@@ -381,7 +382,10 @@
     "or": "or",
     "dontHaveAccount": "Don't have an account? ",
     "signInToKlyra": "Sign in to Klyra",
-    "signUp": "Sign Up"
+    "signUp": "Sign Up",
+    "signInSignUp": "Sign In / Sign Up",
+    "backToHome": "Back",
+    "previousBookingsInfo": "If you have any previous bookings, please use that same email address to sign up and retrieve them."
   },
   "settings": {
     "title": "Settings",
@@ -495,6 +499,9 @@
     "cityPlaceholder": "City (e.g. Oslo)",
     "countryPlaceholder": "Country (e.g. Norway)",
     "phonePlaceholder": "Telephone number",
+    "serviceLocation": "Service Location",
+    "selectLocation": "Select your city",
+    "locationMissing": "Please select a service location to proceed",
     "accommodationAndIntervalMissing": "Accommodation type and cleaning interval are not selected and should be selected to proceed",
     "accommodationTypeMissing": "Accommodation type is not selected and should be selected to proceed",
     "cleaningIntervalMissing": "Cleaning interval is not selected and should be selected to proceed",

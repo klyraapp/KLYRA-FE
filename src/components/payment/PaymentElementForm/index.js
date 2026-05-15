@@ -113,9 +113,7 @@ const PaymentElementForm = ({
       return;
     }
 
-    // Only attach payment_method_data if the parent actually supplied billing
-    // details. Stripe rejects empty objects for some methods, so we omit the
-    // key entirely when there is nothing to send.
+  
     const paymentMethodData =
       billingDetails && Object.keys(billingDetails).length > 0
         ? { billing_details: billingDetails }
@@ -126,9 +124,7 @@ const PaymentElementForm = ({
       ...(paymentMethodData ? { payment_method_data: paymentMethodData } : {}),
     };
 
-    // Notify parent that a redirect-based confirmation is about to start.
-    // For Klarna, stripe.confirmPayment may cause browser navigation before
-    // a response body is visible in devtools; that is expected behavior.
+    
     if (notifyRedirectOnSubmit && onRedirecting) {
       onRedirecting();
     }
@@ -152,11 +148,9 @@ const PaymentElementForm = ({
       } else if (paymentIntent && paymentIntent.status === "succeeded") {
         if (onSuccess) onSuccess(paymentIntent);
       } else if (paymentIntent && paymentIntent.status === "requires_action") {
-        // 3DS / additional authentication — Stripe handles automatically.
+        
       }
-      // Note: for redirect-based methods (Klarna, iDEAL, …) Stripe navigates
-      // away before this promise ever resolves. Any code placed after this
-      // line will not execute on that path.
+     
     } catch (err) {
       setErrorMessage(
         t("messages.paymentFailed", {

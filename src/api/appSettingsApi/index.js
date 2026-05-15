@@ -8,21 +8,23 @@ import api from "@/utils/axiosMiddleware";
 const SETTINGS_ENDPOINT = "/app-settings";
 
 /**
- * Fetches all application settings
+ * Fetches application settings for a specific location
+ * @param {number|string} serviceLocationId
  * @returns {Promise<any[]>}
  */
-export const getAppSettings = () => {
-  return api.get(SETTINGS_ENDPOINT);
+export const getAppSettings = (serviceLocationId) => {
+  return api.get(`/v2${SETTINGS_ENDPOINT}/${serviceLocationId}`);
 };
 
 /**
- * Fetches settings for a specific setting name
+ * Fetches settings for a specific setting name and location
  * @param {string} name - Setting name to fetch (e.g. 'priceSettings')
+ * @param {number|string} serviceLocationId
  * @returns {Promise<any>}
  */
-export const getAppSettingsByName = async (name) => {
+export const getAppSettingsByName = async (name, serviceLocationId) => {
   try {
-    const res = await api.get(SETTINGS_ENDPOINT);
+    const res = await getAppSettings(serviceLocationId);
     const settings = Array.isArray(res.data) ? res.data : [];
     return settings.find((s) => s.name === name);
   } catch (error) {

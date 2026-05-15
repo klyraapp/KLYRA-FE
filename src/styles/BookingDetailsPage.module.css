@@ -32,6 +32,23 @@
   margin-bottom: 32px;
 }
 
+.inputRow {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.inputColumn {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .inputRow {
+    flex-direction: column;
+    gap: 24px;
+  }
+}
+
 .section {
   width: 100%;
 }
@@ -63,16 +80,66 @@
   gap: 16px;
 }
 
+.locationSelect {
+  width: 100%;
+}
+
+.locationSelect {
+  width: 100%;
+  height: 44px !important;
+}
+
+.locationSelect :global(.ant-select-selector) {
+  height: 44px !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 12px !important;
+  font-size: 15px !important;
+  border: 1px solid #d1d5db !important;
+  box-shadow: none !important;
+  background-color: #ffffff !important;
+  width: 100% !important;
+}
+
+.locationSelect :global(.ant-select-selection-search) {
+  inset-inline-start: 12px !important;
+}
+
+.locationSelect :global(.ant-select-selection-item),
+.locationSelect :global(.ant-select-selection-placeholder) {
+  line-height: 42px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.locationSelect:hover :global(.ant-select-selector) {
+  border-color: #297160 !important;
+}
+
+.locationSelect:global(.ant-select-focused) :global(.ant-select-selector) {
+  border-color: #297160 !important;
+  box-shadow: 0 0 0 2px rgba(41, 113, 96, 0.1) !important;
+}
+
 .bathroomInput {
   width: 100%;
-  height: 44px;
+  height: 44px !important;
   font-size: 15px;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
+  border-radius: 8px !important;
+  border: 1px solid #d1d5db !important;
+  box-shadow: none !important;
+  display: block !important;
+}
+
+.bathroomInput :global(.ant-input-number-input-wrap) {
+  height: 100% !important;
 }
 
 .bathroomInput :global(.ant-input-number-input) {
-  height: 42px;
+  height: 42px !important;
+  line-height: 42px !important;
+  padding: 0 12px !important;
 }
 
 .bathroomInput:hover {

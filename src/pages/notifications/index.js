@@ -38,7 +38,7 @@ const NotificationsPage = () => {
   // 1. Initial Fetch
   useEffect(() => {
     if (user?.id) {
-      fetchInitialNotifications();
+    fetchInitialNotifications();
     }
   }, [user?.id]);
 
